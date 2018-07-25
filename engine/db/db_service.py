@@ -15,16 +15,11 @@ class DBService(GenericService):
             cur = self.conn.cursor()
             row = cur.execute(statement)
             row_data = row.fetchall()
-            ##print('before closing the cursor',row_data)
 
             if row == None:
                 print('dont do anything')
             else:
                 column_names = [i[0] for i in row.description]
-                ##row_data = row.fetchall()
-                ##print('middle closing the cursor', row_data)
-                ##print('middle2 closing the cursor', row_data)
-
 
         finally:
             cur.close()
@@ -39,25 +34,20 @@ class DBService(GenericService):
 
     def execute(self,args):
 
+        sql_exec_type = get_input_sql_type(args)
 
         sql_expr_eval_map = {
-                                'statement': '',
-                                'sql_script': '',
-                                'statment_placeholder': ''
-                             }
+            'statement': 'run_statement',
+            'sql_script': 'run_script',
+            'statment_placeholder': 'run_statement_placeholder'
+        }
 
+        func_type = sql_expr_eval_map[sql_exec_type]
 
-        pass
+        try:
+            func = self.__getattribute__(func_type)
+            ret = func(args)
+        except AttributeError:
+            print('Attribute Error')
 
-
-
-
-
-
-
-class DBCommand:
-
-    def execute(self):
-        pass
-
-class
+        return ret

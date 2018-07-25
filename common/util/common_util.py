@@ -12,3 +12,11 @@ def is_sql_script(name = None):
         return True
     return False
 
+def get_input_sql_type(arg):
+    if is_sql_script(arg):
+        return 'sql_script'
+    elif arg.startswith('$'):
+        return 'statment_placeholder'
+    else
+        return 'statement'
+
