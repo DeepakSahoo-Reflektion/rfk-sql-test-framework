@@ -17,6 +17,6 @@ def get_input_sql_type(arg):
         return 'sql_script'
     elif arg.startswith('$'):
         return 'statment_placeholder'
-    else
+    else:
         return 'statement'
 

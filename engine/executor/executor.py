@@ -1,6 +1,7 @@
 from abc import *
 from engine.executor.executor import *
 from common.util.common_util import *
+from engine.service.db_service import *
 
 ## TODO: dont create multiple instances of the Executor, return singleton objects
 class ExecutorFactory:
@@ -39,6 +40,7 @@ class XUnitStyleExecutor(Executor):
     ## each corresponding method
     def __init__(self):
         self.attributes_seq_stack = reversed(['before_once','before_each', 'tests','after_each','after_once'])
+        self.service = DBService()
 
 
     ## TODO : manufacture the query here and proper asserts
@@ -68,23 +70,28 @@ class XUnitStyleExecutor(Executor):
 
     def execute_sheet(self, test_sheet):
         try:
-            before_once = test_sheet.__getattribute__('before_once')
-            ret_value = self.run_script(before_once) if is_sql_script(before_once) else self.run_statments(
-                before_once)
+            # before_once = test_sheet.__getattribute__('before_once')
+            # ret_value = self.run_script(before_once) if is_sql_script(before_once) else self.run_statments(
+            #     before_once)
+            self.service.execute(test_sheet.__getattribute__(self.attributes_seq_stack.pop()))
+
 
             for case in test_sheet.__getattribute__('tests'):
-                before_each = test_sheet.__getattribute__('before_each')
-                ret_value = self.run_script(before_each) if is_sql_script(before_each) else self.run_statments(
-                    before_each)
+                # before_each = test_sheet.__getattribute__('before_each')
+                # ret_value = self.run_script(before_each) if is_sql_script(before_each) else self.run_statments(
+                #     before_each)
+                self.service.execute(test_sheet.__getattribute__(self.attributes_seq_stack.pop()))
 
                 test_result = self.execute_test(case)
 
-                after_each = test_sheet.__getattribute__('after_each')
-                ret_value = self.run_script(after_each) if is_sql_script(after_each) else self.run_statments(
-                    after_each)
+                # after_each = test_sheet.__getattribute__('after_each')
+                # ret_value = self.run_script(after_each) if is_sql_script(after_each) else self.run_statments(
+                #     after_each)
+                self.service.execute(test_sheet.__getattribute__(self.attributes_seq_stack.pop()))
 
-            after_once = test_sheet.__getattribute__('after_once')
-            ret_value = self.run_script(after_once) if is_sql_script(after_once) else self.run_statments(after_once)
+            # after_once = test_sheet.__getattribute__('after_once')
+            # ret_value = self.run_script(after_once) if is_sql_script(after_once) else self.run_statments(after_once)
+            self.service.execute(test_sheet.__getattribute__(self.attributes_seq_stack.pop()))
 
         except AttributeError as e:
             print('')

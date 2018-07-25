@@ -7,6 +7,11 @@ class GenericService:
 
 class DBService(GenericService):
 
+    ## TODO : connection initialization and closing
+    def __init__(self):
+        pass
+
+
     def run_script(self, script):
         pass
 
