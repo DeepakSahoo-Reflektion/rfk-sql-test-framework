@@ -1,6 +1,6 @@
 import snowflake.connector
 
-class SnowflakeComponent:
+class SnowflakeConnection:
 
     def __init__(self,user,pwd,account):
         pass

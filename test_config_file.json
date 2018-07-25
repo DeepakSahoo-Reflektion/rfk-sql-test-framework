@@ -9,8 +9,8 @@
     ""
   ],
   "before_each": [
-    "truncate EM.be_workflow_step1_inventory_trigger_rows.sql",
-    ".."
+    "insert_user_events.sql",
+    ""
   ],
   "tests": [
     {
