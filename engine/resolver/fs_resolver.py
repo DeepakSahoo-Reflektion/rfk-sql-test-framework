@@ -1,4 +1,4 @@
-from engine.path_resolver.resolver import PathResolver
+from engine.resolver.resolver import PathResolver
 from codecs import open
 import os
 

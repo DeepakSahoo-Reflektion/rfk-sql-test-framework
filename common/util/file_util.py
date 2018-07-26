@@ -40,7 +40,7 @@ def read_file(file_loc):
         logger.info('abs_file_path %s', file_loc)
         f = open(file_loc, 'r', encoding='utf-8')
     except FileNotFoundError:
-        logger.error('File Not found')
+        logger.error('File Not found in the location %s',file_loc)
         raise Exception('file not found')
     return f
 

@@ -5,11 +5,11 @@
   "date": "20180711",
   "sql_path": "email_marketing/be/workflow_step1_session_triggers_hourly.sql",
   "before_once": [
-    "setup.sql",
+    "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
     ""
   ],
   "before_each": [
-    "insert_user_events.sql",
+    "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
     ""
   ],
   "tests": [

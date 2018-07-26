@@ -6,23 +6,21 @@
   "sql_path": "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests",
   "script_path":"/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
   "before_once": [
-    "setup.sql"
+    "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows"
   ],
   "before_each": [
-    "insert_user_events.sql"
+    "SELECT * FROM TEST.EM.be_workflow_step2_merged_rows"
   ],
   "tests": [
     {
       "name": "test1",
       "description": "No data in product_state_changes table",
       "before_test": [
-        "truncate.sql",
-        "insert_user_events.sql",
-        "insert2"
+        "SELECT * FROM TEST.EM.be_workflow_step3_mapped_rows"
       ],
       "asserts": [
         {
-          "sql": "select trigger_name, count(*) from EM.be_workflow_step1_inventory_trigger_rows group by trigger_name",
+          "sql": "SELECT * FROM TEST.EM.be_workflow_step5_filtered_rows",
           "expected": [
             "insert3"
           ],
@@ -37,7 +35,7 @@
         }
       ],
       "after_test": [
-        "truncate.sql"
+        "SELECT * FROM TEST.EM.be_workflow_step4_merged_rows"
       ]
     }
   ],

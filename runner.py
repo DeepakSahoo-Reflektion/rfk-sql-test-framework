@@ -1,7 +1,7 @@
 # from engine.data.suite import TestSuite
 from engine.executor.executor import *
 from engine.parser.json_parser import *
-from engine.path_resolver.fs_resolver import FileLocPathResolver
+from engine.resolver.fs_resolver import FileLocPathResolver
 
 import logging
 

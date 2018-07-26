@@ -61,14 +61,15 @@ class DBService(Service):
         self.run_statement(statement)
 
     def serve(self, args):
-        logger.info('DBService:Serve with args:%s', args)
-        sql_exec_type = get_input_sql_type(args)
+        logger.info('DBService:Serve with args:%s', args[0])
+
+        sql_exec_type = get_input_sql_type(args[0])
 
         func_type = self._sql_expr_eval_map[sql_exec_type]
         logger.info('DBService:Serve with func_type %s',func_type)
         try:
             func = get_function_by_name(self,func_type)
-            ret = func(args)
+            ret = func(args[0])
         except AttributeError as e:
             logger.error('Attribute Error')
             raise e
