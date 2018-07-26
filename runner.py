@@ -1,7 +1,7 @@
 # from engine.data.suite import TestSuite
 from engine.executor.executor import *
 from engine.parser.json_parser import *
-from engine.resolver.fs_resolver import FileLocPathResolver
+from engine.resolver.fs_resolver import FSPathResolver
 
 import logging
 
@@ -44,7 +44,7 @@ def invoke_single(test_sheet_loc= None):
         raise ValueError('Test-Sheet location is not provided for single execution')
 
     logger.info('Runner: Creating the fileLocPathResolver')
-    file = FileLocPathResolver().resolve(test_sheet_loc)
+    file = FSPathResolver().resolve(test_sheet_loc)
 
     logger.info('Runner: Creating the test-sheet')
     ## TODO : create the Test-Sheet instance by calling the parser

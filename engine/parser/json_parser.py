@@ -10,6 +10,3 @@ class JsonParser(ConfigParser):
 
         json_obj = json.loads(file, object_hook=type)
         return json_obj
-
-
-

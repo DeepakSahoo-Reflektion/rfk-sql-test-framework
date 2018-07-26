@@ -1,10 +1,11 @@
 from engine.resolver.resolver import PathResolver
 
-##TODO: establish the connection and access check etc for git inisde init block
-class GitPathResolver(PathResolver):
+##TODO: establish the connection inside __init__ to s3
+class S3PathResolver(PathResolver):
 
     def __init__(self):
-        pass
+        super().__init__()
+
 
     def resolve(self,file_path):
         f = open(file_path, 'r', encoding='utf-8')
