@@ -3,6 +3,7 @@ from engine.service.service import DBService
 from engine.executor.executor_factory import *
 from engine.resolver.fs_resolver import *
 from engine.parser.json_parser import *
+from engine.data.sheet import TestSheet
 
 ### for testing the snowflake_connection
 # conn = ConnectionFactory.get_connection('Snowflake')
@@ -31,7 +32,12 @@ from engine.parser.json_parser import *
 #     db_service.close()
 
 
-## testing the executor_factory
+## json parser test
+# file = FileLocPathResolver().resolve('/Users/deepak/PycharmProjects/rfk-sql-test-framework/sample_config_file.json')
+# data = JsonParser().parse(file)
+# print(data)
+
+# testing the executor_factory
 # executor = ExecutorFactory.get_executor('XUnitStyle')
 # print(executor)
 # print(dir(executor))

@@ -6,7 +6,6 @@ from engine.executor.xunit_executor import XUnitStyleExecutor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-##TODO: check correct static implementation
 class ExecutorFactory:
     '''
     Factory for the executor. As of now only one type of executor is supported.

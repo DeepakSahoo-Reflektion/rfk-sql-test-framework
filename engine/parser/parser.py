@@ -1,8 +1,8 @@
-from abc import *
+import abc
 
-class ConfigParser(ABC):
+class ConfigParser(metaclass=abc.ABCMeta):
 
-    @abstractmethod
-    def parse(self, file_loc):
+    @abc.abstractmethod
+    def parse(self, arg,**kwargs):
         pass
 

@@ -1,28 +1,15 @@
 import json
-
 from engine.parser.parser import ConfigParser
-from engine.data.sheet import TestSheet
 
+## TODO: exception handling and logging
 class JsonParser(ConfigParser):
 
-    def __init__(self):
-        pass
+    def parse(self, file,type = None):
+        if not type:
+            return json.loads(file)
 
-    # def object_decoder(obj):
-    #     if '__type__' in obj and obj['__type__'] == 'TestSheet':
-    #         return TestSheet(obj)
-    #     return obj
-
-
-    def parse(self, json_file):
-        ##print('JsonParser with file as :{}',json_file)
-        ##o = json.loads(json_file)
-        json_obj = json.loads(json_file,object_hook=TestSheet)
-        ##print(o['name'])
-        ##return o
-        ##print(json_obj)
-        ##print(dir(json_obj))
-        ##print('====',json_obj.tests[0].name)
+        json_obj = json.loads(file, object_hook=type)
         return json_obj
+
 
 

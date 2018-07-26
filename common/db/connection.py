@@ -1,3 +1,4 @@
+import abc
 from common.db.snowflake_connection import SnowflakeConnection
 
 class ConnectionFactory(object):
@@ -8,3 +9,9 @@ class ConnectionFactory(object):
             return SnowflakeConnection().get_connection()
         else:
             return None
+
+class Connection(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def get_connection(self,*args,**kwargs):
+        pass

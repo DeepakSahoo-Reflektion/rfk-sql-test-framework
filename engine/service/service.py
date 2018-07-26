@@ -14,9 +14,13 @@ class Service(metaclass=abc.ABCMeta):
     def serve(self, args):
         pass
 
-
+## TODO : connection initialization and closing
+## TODO : call resolve_placeholder() and after that in run_statement_placeholder()
+## TODO: Don't hardcode snowflake here, take it as parameter
+## TODO :try/catch with exception handling inside run_script() and other methods
+## TODO: fix logging
 class DBService(Service):
-    ## TODO : connection initialization and closing
+
     def __init__(self):
         logger.info('DBService:init block')
         self._conn = ConnectionFactory.get_connection('Snowflake')
@@ -27,7 +31,7 @@ class DBService(Service):
             'statment_placeholder': 'run_statement_placeholder'
         }
 
-    ## TODO :try/catch with exception handling
+
     def run_script(self, script):
         logger.info('DBService:run_script script_file:%s', script)
 
@@ -57,7 +61,6 @@ class DBService(Service):
         return (headers, row_data)
 
     def run_statement_placeholder(self, statement):
-        ## TODO : call resolve_placeholder() and after that
         self.run_statement(statement)
 
     def serve(self, args):
