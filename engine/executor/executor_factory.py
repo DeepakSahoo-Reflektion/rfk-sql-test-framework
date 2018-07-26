@@ -28,7 +28,7 @@ class ExecutorFactory:
             executor = ExecutorFactory._instances.get(type,None)
             if not executor:
                 executor =  XUnitStyleExecutor()
-            ExecutorFactory._instances.put(type,executor)
+            ExecutorFactory._instances[type] = executor
             return executor
 
         else:

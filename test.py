@@ -1,6 +1,6 @@
 from common.db.connection import ConnectionFactory
 from engine.service.service import DBService
-from engine.executor.executor import *
+from engine.executor.executor_factory import *
 from engine.resolver.fs_resolver import *
 from engine.parser.json_parser import *
 
@@ -31,9 +31,13 @@ from engine.parser.json_parser import *
 #     db_service.close()
 
 
+## testing the executor_factory
+# executor = ExecutorFactory.get_executor('XUnitStyle')
+# print(executor)
+# print(dir(executor))
 
 ## testing the executor
-file = FileLocPathResolver().resolve('/Users/deepak/PycharmProjects/rfk-sql-test-framework/sample_config_file.json')
-test_sheet = JsonParser().parse(file)
-xunit_executor = ExecutorFactory.get_executor('XUnitStyle')
-xunit_executor.execute(test_sheet)
+# file = FileLocPathResolver().resolve('/Users/deepak/PycharmProjects/rfk-sql-test-framework/sample_config_file.json')
+# test_sheet = JsonParser().parse(file)
+# xunit_executor = ExecutorFactory.get_executor('XUnitStyle')
+# xunit_executor.execute(test_sheet)

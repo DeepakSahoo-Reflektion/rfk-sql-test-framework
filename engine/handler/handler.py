@@ -34,10 +34,10 @@ class CaseHandler(object):
 
 class AssertHandler(object):
 
-    def handle_request(self,each_assert):
-        logger.info('XUnitStyleExecutor:execute_assert ENTRY with args %s', each_assert)
-        sql = each_assert.__getattribute__('sql')
-        ret_value = self.run_script(sql) if is_sql_script(sql) else self.run_statments(sql)
+    def __init__(self,service):
+        self._service = service
 
-        expected = each_assert.get('expected', None)
-        ret_value = self.run_script(sql) if is_sql_script(sql) else self.run_statments(sql)
+    def handle_request(self,each_assert):
+        self._service.serve(each_assert.__getattribute__('sql'))
+
+        self._service.serve(each_assert.__getattribute__('expected'))
