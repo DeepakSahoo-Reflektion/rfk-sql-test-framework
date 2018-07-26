@@ -1,5 +1,5 @@
 
-
+## TODO : implement the below methods
 class TestCase:
 
     def __init__(self,*args,**kwargs):
@@ -9,26 +9,11 @@ class TestCase:
         self.after_test = None
         self.status = None
         self.asserts = None
-        
-
-    # def __str__(self):
-    #     pass
-    #
-    # ## TODO : make the TestCase class as callable
-    # def __call__(self, *args, **kwargs):
-    #     self.before_test()
-    #
-    #     self.after_test()
-    #     pass
-    #
-    # def before_test(self,args):
-    #     pass
-    #
-    # def after_test(self,args):
-    #     pass
-    #
-    # def _asserts(self):
-    #     pass
 
 
+    def __repr__(self):
+        pass
+
+    def __str__(self):
+        pass
 

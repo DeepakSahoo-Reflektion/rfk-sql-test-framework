@@ -15,14 +15,14 @@ class JsonParser(ConfigParser):
 
 
     def parse(self, json_file):
-        print('JsonParser with file as :{}',json_file)
+        ##print('JsonParser with file as :{}',json_file)
         ##o = json.loads(json_file)
         json_obj = json.loads(json_file,object_hook=TestSheet)
         ##print(o['name'])
         ##return o
-        print(json_obj)
-        print(dir(json_obj))
-        print('====',json_obj.tests[0].name)
+        ##print(json_obj)
+        ##print(dir(json_obj))
+        ##print('====',json_obj.tests[0].name)
         return json_obj
 
 

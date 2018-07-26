@@ -2,6 +2,13 @@
 from engine.executor.executor import *
 from engine.parser.json_parser import *
 from engine.path_resolver.fs_resolver import FileLocPathResolver
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
+
+
 # def main():
 #     ## TODO : scan all the test files recursively in the location
 #     print('')
@@ -13,7 +20,7 @@ from engine.path_resolver.fs_resolver import FileLocPathResolver
 #     suite = TestSuite()
 #
 #     ## TODO : for each test configuration file create the data object or dict
-#     ## TODO : create the test sheet from the config parser
+#     ## TODO : create the test sheet from the db parser
 #
 #     sheet = JsonParser().parse()
 #
@@ -33,13 +40,19 @@ from engine.path_resolver.fs_resolver import FileLocPathResolver
 
 def invoke_single(test_sheet_loc= None):
     if not test_sheet_loc:
+        logger.error('Runner: Error in the file location')
         raise ValueError('Test-Sheet location is not provided for single execution')
 
+    logger.info('Runner: Creating the fileLocPathResolver')
     file = FileLocPathResolver().resolve(test_sheet_loc)
+
+    logger.info('Runner: Creating the test-sheet')
     ## TODO : create the Test-Sheet instance by calling the parser
     test_sheet = JsonParser().parse(file)
 
+    logger.info('Runner: Creating the executor')
     executor = ExecutorFactory().get_executor('XUnitStyle')
+    logger.info('Runner : executor created')
     executor.execute(test_sheet)
 
 
@@ -48,4 +61,4 @@ def invoke_single(test_sheet_loc= None):
 #     invoke_single('/Users/deepak/PycharmProjects/rfk-sql-test-framework/test_config_file.json')
 
 print(__name__)
-invoke_single('/Users/deepak/PycharmProjects/rfk-sql-test-framework/test_config_file.json')
+invoke_single('/Users/deepak/PycharmProjects/rfk-sql-test-framework/sample_config_file.json')

@@ -1,0 +1,52 @@
+{
+  "name": "inventory triggers test",
+  "description": "Test cases for BE workflow step 1: inventory triggers",
+  "author": "Deepak",
+  "date": "20180711",
+  "sql_path": "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests",
+  "script_path":"/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
+  "before_once": [
+    "setup.sql"
+  ],
+  "before_each": [
+    "insert_user_events.sql"
+  ],
+  "tests": [
+    {
+      "name": "test1",
+      "description": "No data in product_state_changes table",
+      "before_test": [
+        "truncate.sql",
+        "insert_user_events.sql",
+        "insert2"
+      ],
+      "asserts": [
+        {
+          "sql": "select trigger_name, count(*) from EM.be_workflow_step1_inventory_trigger_rows group by trigger_name",
+          "expected": [
+            "insert3"
+          ],
+          "message": "Count per trigger is different"
+        },
+        {
+          "sql": "select ...",
+          "expected": [
+            "insert4"
+          ],
+          "message": "Count per trigger is different"
+        }
+      ],
+      "after_test": [
+        "truncate.sql"
+      ]
+    }
+  ],
+  "after_each": [
+    " ",
+    " "
+  ],
+  "after_once": [
+    " ",
+    " "
+  ]
+}

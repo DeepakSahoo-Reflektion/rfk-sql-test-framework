@@ -19,8 +19,3 @@ class TestSuite:
     def count_sheets(self):
         self._no_of_sheets += 1
         return self._no_of_sheets
-
-
-
-
-
