@@ -1,4 +1,5 @@
 from common.util.common_util import *
+from common.config.snowflake_connection import SnowflakeConnection
 
 class GenericService:
 
@@ -9,6 +10,7 @@ class DBService(GenericService):
 
     ## TODO : connection initialization and closing
     def __init__(self):
+        self.conn = SnowflakeConnection().get_connection()
         pass
 
 
@@ -56,3 +58,11 @@ class DBService(GenericService):
             print('Attribute Error')
 
         return ret
+
+    def close(self):
+        print('Close the connections')
+        try:
+            self.conn.close()
+        except:
+            print('Error closing connections')
+        pass

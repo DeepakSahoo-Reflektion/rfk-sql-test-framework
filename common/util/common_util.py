@@ -20,3 +20,5 @@ def get_input_sql_type(arg):
     else:
         return 'statement'
 
+def generate_sql_for_asserts(sql):
+    pass

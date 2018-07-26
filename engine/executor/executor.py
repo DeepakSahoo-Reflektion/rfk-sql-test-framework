@@ -45,7 +45,7 @@ class XUnitStyleExecutor(Executor):
 
     ## TODO : manufacture the query here and proper asserts
     def execute_assert(self, each_assert):
-        sql = each_assert.get('before_test', None)
+        sql = each_assert.get('sql', None)
         ret_value = self.run_script(sql) if is_sql_script(sql) else self.run_statments(sql)
 
         expected = each_assert.get('expected', None)
@@ -95,6 +95,8 @@ class XUnitStyleExecutor(Executor):
 
         except AttributeError as e:
             print('')
+        finally:
+            self.service.close()
 
 
      ## TODO : improvise this below code

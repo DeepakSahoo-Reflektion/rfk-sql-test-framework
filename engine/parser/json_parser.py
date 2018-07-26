@@ -1,5 +1,6 @@
-from engine.parser.config_parser import ConfigParser
 import json
+
+from engine.parser.parser import ConfigParser
 from engine.data.sheet import TestSheet
 
 class JsonParser(ConfigParser):
