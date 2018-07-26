@@ -12,10 +12,11 @@ class SnowflakeConnection:
         self.snowflake_pwd = os.getenv('SNOWFLAKE_PWD')
         self.snowflake_acc = os.getenv('SNOWFLAKE_ACC')
 
+
         ## TODO : proper way of empty check and missing check and raise exceptions
         if not self.snowflake_user or not self.snowflake_pwd or not self.snowflake_acc:
             logging.error('MISSING SNOWFLAKE CONFIG')
-            raise Exception('')
+            raise Exception('Missing Snowflake configuration')
 
     ## TODO : proper way of error handling and ping check if it can connect.
     def get_connection(self):
@@ -27,6 +28,7 @@ class SnowflakeConnection:
             )
         except Exception:
             logging.error('Failed to establish Snowflake connection ')
+            raise Exception('Failed to establish snowflake connection')
         return self.conn
 
 
