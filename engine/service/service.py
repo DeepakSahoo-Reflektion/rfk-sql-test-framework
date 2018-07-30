@@ -1,11 +1,12 @@
 import logging
 import abc
+from codecs import open
 
 from common.util.file_util import *
 from common.util.common_util import *
 from common.db.connection import ConnectionFactory
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
@@ -33,13 +34,35 @@ class DBService(Service):
 
 
     def run_script(self, script):
-        logger.info('DBService:run_script script_file:%s', script)
+        logger.info('DBService:run_script ENTRY script_file:%s', script)
 
+        cur = self._conn.cursor()
+        #row = cur.execute('USE TEST')
+        # row = cur.execute("SET DATE='20180723'")
+        # row = cur.execute("SET HOUR='03'")
+
+        logger.info('DBService:run_script MIDDLE')
         f = read_file(script)
+
+        # with open(script, 'r', encoding='utf-8') as f:
+        #     for _cur in self._conn.execute_stream(f):
+        #         for ret in _cur:
+        #             print(ret)
+
+        # with open(script, 'r', encoding='utf-8') as f:
+        #     logger.info('inside run_script with %s',f)
+        #     for cur in self._conn.execute_stream(f):
+        #         for ret in cur:
+        #             pass
+
+        logger.info('DBService:run_script script_file:%s', f)
         for cur in self._conn.execute_stream(f):
             for ret in cur:
+                #print(ret)
                 pass
+
         cur.close()
+        logger.info('DBService:run_script EXIT script_file:%s', script)
 
     def run_statement(self, statement):
         try:
@@ -63,25 +86,51 @@ class DBService(Service):
     def run_statement_placeholder(self, statement):
         self.run_statement(statement)
 
-    def serve(self, args):
-        logger.info('DBService:Serve with args:%s', args[0])
 
-        sql_exec_type = get_input_sql_type(args[0])
+    def _evaluate_single(self,args):
+        logger.info('DBService:_evaluate_single ENTRY with  %s', args)
 
-        func_type = self._sql_expr_eval_map[sql_exec_type]
-        logger.info('DBService:Serve with func_type %s',func_type)
+        if len(args) == 0:
+            logger.warn('DBService:Serve Empty args returning....')
+            return
+
+        sql_exec_type = get_input_sql_type(args)
         try:
-            func = get_function_by_name(self,func_type)
-            ret = func(args[0])
+            func_type = self._sql_expr_eval_map[sql_exec_type]
+            logger.info('DBService:_evaluate_single with func_type %s', func_type)
+
+            func = get_function_by_name(self, func_type)
+            ret = func(args)
         except AttributeError as e:
-            logger.error('Attribute Error')
+            logger.error('DBService:_evaluate_single AttributeError..... %s', e.args)
             raise e
+        except Exception as e:
+            logger.error('DBService:_evaluate_single Exception %s', e.args)
+            raise e
+        logger.info('DBService:_evaluate_single EXIT with  %s', ret)
         return ret
 
+    def _evaluate_list(self,args):
+        logger.info('DBService:_evaluate_list ENTRY with  %s', args)
+        ret = [self._evaluate_single(arg) for arg in args]
+        logger.info('DBService:_evaluate_list EXIT with  %s', ret)
+
+
+    def serve(self, args):
+        logger.info('DBService:Serve ENTRY with args:%s', args)
+
+        if isinstance(args,list):
+            logger.info('DBService:Serve with list args')
+            return self._evaluate_list(args)
+        else:
+            logger.info('DBService:Serve with single arg')
+            return self._evaluate_single(args)
+
+
     def close(self):
-        logger.info('Close the connections')
+        logger.info('DBService:Close the connections')
         try:
             self._conn.close()
         except:
-            logger.error('Error closing connections')
-            raise Exception('Error closing DB connection')
+            logger.error('DBService:Error closing connections')
+            raise Exception('DBService:Error closing DB connection')
