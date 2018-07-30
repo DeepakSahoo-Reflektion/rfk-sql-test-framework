@@ -101,10 +101,8 @@ class DBService(Service):
         logger.info('DBService:Serve ENTRY with args:%s', args)
 
         if isinstance(args,list):
-            logger.info('DBService:Serve with list args')
             return self._evaluate_list(args)
         else:
-            logger.info('DBService:Serve with single arg')
             return self._evaluate_single(args)
 
 
