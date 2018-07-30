@@ -2,6 +2,7 @@
 from engine.executor.executor import *
 from engine.executor.executor_factory import ExecutorFactory
 from engine.parser.json_parser import *
+from engine.parser.yaml_parser import *
 from engine.resolver.fs_resolver import FSPathResolver
 from engine.data.context import SuiteContext
 
@@ -10,6 +11,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+##TODO: check the argv to extract the arguments
 
 # def main():
 #     ## TODO : scan all the test files recursively in the location
@@ -50,7 +52,10 @@ def invoke_single(context,test_sheet_loc= None):
 
     logger.info('Runner: Creating the test-sheet')
     ## TODO : create the Test-Sheet instance by calling the parser
-    test_sheet = JsonParser().parse(file)
+    ## the test_sheet here is a kind of dictionar. create a Testsheet context object and pass it
+    ##test_sheet = JsonParser().parse(file)
+    test_sheet = YamlParser().parse(file)
+    logger.info('after YAML parsing %s',test_sheet)
 
     ##context.add_attribute(test_sheet_loc,test_sheet)
 
