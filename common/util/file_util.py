@@ -45,3 +45,5 @@ def read_file(file_loc):
         raise Exception('file not found')
     return f
 
+def get_file_ext(file_name):
+    return os.path.splitext(file_name)[1]

@@ -7,8 +7,14 @@ class SheetContext(object):
 
     def __init__(self):
         self.sheet = None
-        self.cases_count = 0
+        self.dict = {}
         self.cases_executed = 0
+
+    def initialize(self,dict):
+        self.sql_path = dict.get('sql_path',None)
+        self.script_path = dict.get('script_path', None)
+        self.cases_count = dict.get('', None)
+
 
 class SuiteContext(object):
 
