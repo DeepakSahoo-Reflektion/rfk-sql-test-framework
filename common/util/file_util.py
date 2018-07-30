@@ -1,6 +1,6 @@
 import re
 import os
-import codecs
+from codecs import open
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -9,8 +9,9 @@ logger = logging.getLogger()
 
 ## TODO: empty file check also, i.e len(name) == 0
 def is_sql_script(name = None):
-    print('inside is_sql_script',name)
+    logger.info('inside is_sql_script %s',name)
     if not name:
+        logger.error('is_sql_script name is not specified')
         raise ValueError('Name is not specified')
 
     r1 = re.findall(r"([^\s]+(\.(?i)(sql))$)", name)
@@ -34,13 +35,13 @@ def generate_sql_for_asserts(sql):
 ## TODO: revisit this
 def read_file(file_loc):
     if not file_loc or len(file_loc) == 0:
-        logger.error('Invalid file location')
+        logger.error('read_file:Invalid file location')
         raise Exception('invalid file location')
     try:
-        logger.info('abs_file_path %s', file_loc)
+        logger.info('read_file:abs_file_path %s', file_loc)
         f = open(file_loc, 'r', encoding='utf-8')
     except FileNotFoundError:
-        logger.error('File Not found in the location %s',file_loc)
+        logger.error('read_file:File Not found in the location %s',file_loc)
         raise Exception('file not found')
     return f
 

@@ -1,7 +1,9 @@
 # from engine.data.suite import TestSuite
 from engine.executor.executor import *
+from engine.executor.executor_factory import ExecutorFactory
 from engine.parser.json_parser import *
 from engine.resolver.fs_resolver import FSPathResolver
+from engine.data.context import SuiteContext
 
 import logging
 
@@ -38,7 +40,7 @@ logger = logging.getLogger()
 #     ## TODO: end of line
 
 
-def invoke_single(test_sheet_loc= None):
+def invoke_single(context,test_sheet_loc= None):
     if not test_sheet_loc:
         logger.error('Runner: Error in the file location')
         raise ValueError('Test-Sheet location is not provided for single execution')
@@ -49,6 +51,8 @@ def invoke_single(test_sheet_loc= None):
     logger.info('Runner: Creating the test-sheet')
     ## TODO : create the Test-Sheet instance by calling the parser
     test_sheet = JsonParser().parse(file)
+
+    ##context.add_attribute(test_sheet_loc,test_sheet)
 
     logger.info('Runner: Creating the executor')
     executor = ExecutorFactory().get_executor('XUnitStyle')
@@ -61,4 +65,8 @@ def invoke_single(test_sheet_loc= None):
 #     invoke_single('/Users/deepak/PycharmProjects/rfk-sql-test-framework/test_config_file.json')
 
 print(__name__)
-invoke_single('/Users/deepak/PycharmProjects/rfk-sql-test-framework/sample_config_file.json')
+
+if __name__ == '__main__':
+    context = SuiteContext()
+    invoke_single(context,'/Users/deepak/PycharmProjects/rfk-sql-test-framework/running_config_be_step1_inventory.json')
+

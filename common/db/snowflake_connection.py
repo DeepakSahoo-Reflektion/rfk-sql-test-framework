@@ -2,7 +2,7 @@ import snowflake.connector
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 class SnowflakeConnection:

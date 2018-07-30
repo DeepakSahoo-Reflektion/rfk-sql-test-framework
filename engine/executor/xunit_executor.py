@@ -16,13 +16,15 @@ class XUnitStyleExecutor(Executor):
         self.attributes_seq_stack = ['after_once','after_each','tests','before_each','before_once']
         self._service = DBService()
         self._handler = SheetHandler(self._service)
+        ##self._handler = SheetHandler(None)
 
     def execute(self, sheet):
+        logger.info('XUnitStyleExecutor:execute ENTRY with %s', sheet)
         try:
             self._handler.handle_request(sheet)
         except AttributeError as e:
-            logger.error('Attribute Error .. %s', e.args)
+            logger.error('XUnitStyleExecutor:Attribute Error .. %s', e.args)
             self._service.close()
         except Exception as e:
-            logger.error('Some exception raised .. %s',e.args)
+            logger.error('XUnitStyleExecutor:Some exception raised .. %s',e.args)
             self._service.close()

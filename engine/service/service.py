@@ -35,30 +35,11 @@ class DBService(Service):
 
     def run_script(self, script):
         logger.info('DBService:run_script ENTRY script_file:%s', script)
-
         cur = self._conn.cursor()
-        #row = cur.execute('USE TEST')
-        # row = cur.execute("SET DATE='20180723'")
-        # row = cur.execute("SET HOUR='03'")
-
-        logger.info('DBService:run_script MIDDLE')
         f = read_file(script)
 
-        # with open(script, 'r', encoding='utf-8') as f:
-        #     for _cur in self._conn.execute_stream(f):
-        #         for ret in _cur:
-        #             print(ret)
-
-        # with open(script, 'r', encoding='utf-8') as f:
-        #     logger.info('inside run_script with %s',f)
-        #     for cur in self._conn.execute_stream(f):
-        #         for ret in cur:
-        #             pass
-
-        logger.info('DBService:run_script script_file:%s', f)
         for cur in self._conn.execute_stream(f):
             for ret in cur:
-                #print(ret)
                 pass
 
         cur.close()
