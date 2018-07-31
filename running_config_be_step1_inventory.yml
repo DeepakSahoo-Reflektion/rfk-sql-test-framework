@@ -22,7 +22,7 @@ tests:
   asserts:
   - sql: SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows
     expected:
-    - "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_.sql"
+    - "insert_.sql"
     message: Count per trigger is different
   after_test:
   - TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows

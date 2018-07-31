@@ -14,4 +14,3 @@ class Service(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def serve(self, args):
         pass
-

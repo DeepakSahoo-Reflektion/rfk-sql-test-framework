@@ -84,6 +84,7 @@ class AssertHandler(object):
 
     def handle_request(self,each_assert,meta_args):
         self._service.serve(each_assert.get('expected', None))
+        ##self._service.serve(CommandObject(type='sql',opr='execute_statement',payload=None))
 
         sql_query = each_assert.get('sql', None)
         query_result = self._service.serve(sql_query)

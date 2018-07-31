@@ -21,6 +21,7 @@ class DBService(Service):
     def __init__(self,context):
         logger.info('DBService:init block')
         self._conn = ConnectionFactory.get_connection('Snowflake')
+        self._context = context
         self._sql_expr_eval_map = {
             'statement': 'run_statement',
             'sql_script': 'run_script',

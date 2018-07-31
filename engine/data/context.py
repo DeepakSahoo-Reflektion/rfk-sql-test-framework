@@ -5,14 +5,16 @@ logger = logging.getLogger()
 
 
 class ContextManager(object):
+
     @staticmethod
-    def initialize_default(self, type = None, args = None):
+    def initialize_default(type = None):
         if not type:
             return
-
+        logger.info('ContextManager:initialize_default with type %s', type)
         if type == 'case':
             return CaseContext().with_default()
         elif type == 'sheet':
+
             return SheetContext().with_default()
         elif type == 'suite':
             return SuiteContext().with_default()
@@ -62,10 +64,15 @@ class SheetContext(object):
         self.results = None
         return self
 
-    def initialize(self, dict):
-        self.sql_path = dict.get('sql_path', None)
-        self.script_path = dict.get('script_path', None)
-        self.cases_count = dict.get('', None)
+    def update_params(self,dict):
+        self.kv = dict
+        logger.info('SheetContext:update_params with data %s',self.kv)
+        return self
+
+    # def initialize(self, dict):
+    #     self.sql_path = dict.get('sql_path', None)
+    #     self.script_path = dict.get('script_path', None)
+    #     self.cases_count = dict.get('', None)
 
 
 class CaseContext(object):

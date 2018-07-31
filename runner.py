@@ -30,6 +30,8 @@ def invoke_single(exec_type,file_path_loc,loc_type):
 
     sheet = ParserFactory.get_parser(file_ext).parse(file)
 
+    context.update_params(sheet)
+
     result = ExecutorFactory.get_executor(exec_type,context).execute(sheet)
 
     return result
