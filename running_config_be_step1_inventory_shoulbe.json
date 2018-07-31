@@ -3,8 +3,8 @@
   "description": "Test cases for BE workflow step 1: inventory triggers",
   "author": "Deepak",
   "date": "20180711",
-  "sql_path": "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests", //search the sql queries values here
-  "script_path":"/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
+  "sql_path": "fs:/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests", //search the sql queries values here
+  "script_path":"fs:/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
   "before_once": [
     ""
   ],
@@ -23,7 +23,7 @@
         {
           "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
           "expected": [
-            "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_.sql"
+            "insert_.sql"
           ],
           "message": "Count per trigger is different"
         }

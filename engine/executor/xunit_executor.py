@@ -1,22 +1,19 @@
 import logging
 
 from engine.executor.executor import Executor
-from engine.service.service import DBService
+from engine.service.db_service import DBService
 from engine.handler.handler import SheetHandler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-## TODO : make the attributes_list as a stack and pop the attributes in order till the stack is empty and invoke
 class XUnitStyleExecutor(Executor):
 
-    def __init__(self):
+    def __init__(self,context):
         super().__init__()
         logger.info('XUnitStyleExecutor: Init')
-        self.attributes_seq_stack = ['after_once','after_each','tests','before_each','before_once']
-        self._service = DBService()
+        self._service = DBService(context)
         self._handler = SheetHandler(self._service)
-        ##self._handler = SheetHandler(None)
 
     def execute(self, sheet):
         logger.info('XUnitStyleExecutor:execute ENTRY with %s', sheet)
