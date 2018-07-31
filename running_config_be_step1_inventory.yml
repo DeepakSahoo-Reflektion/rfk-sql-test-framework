@@ -22,15 +22,15 @@ tests:
   asserts:
   - sql: SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows
     expected:
-    - "insert_.sql"
+    - "insert_exp.sql"
     message: Count per trigger is different
   after_test:
   - TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows
   - TRUNCATE TABLE TEST.ETL.user_events
   - TRUNCATE TABLE TEST.PUBLIC.product_state_changes
 after_each:
-- " "
-- " "
+- ""
+- ""
 after_once:
-- " "
-- " "
+- ""
+- ""

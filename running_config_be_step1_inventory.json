@@ -21,9 +21,9 @@
       ],
       "asserts": [
         {
-          "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
+          "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows MINUS SELECT * FROM TEST.EM.test_be_workflow_step1_inventory_trigger_rows",
           "expected": [
-            "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_.sql"
+            "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_exp.sql"
           ],
           "message": "Count per trigger is different"
         }
@@ -35,11 +35,11 @@
     }
   ],
   "after_each": [
-    " ",
-    " "
+    "",
+    ""
   ],
   "after_once": [
-    " ",
-    " "
+    "",
+    ""
   ]
 }

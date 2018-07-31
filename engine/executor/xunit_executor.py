@@ -23,7 +23,10 @@ class XUnitStyleExecutor(Executor):
             self._handler.handle_request(sheet)
         except AttributeError as e:
             logger.error('XUnitStyleExecutor:Attribute Error .. %s', e.args)
-            self._service.close()
+
         except Exception as e:
             logger.error('XUnitStyleExecutor:Some exception raised .. %s',e.args)
+        finally:
+            logger.info('Closing the connections.......')
             self._service.close()
+
