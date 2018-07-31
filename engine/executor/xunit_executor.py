@@ -20,7 +20,8 @@ class XUnitStyleExecutor(Executor):
     def execute(self, sheet):
         logger.info('XUnitStyleExecutor:execute ENTRY with %s', sheet)
         try:
-            self._handler.handle_request(sheet)
+             result = self._handler.handle_request(sheet)
+
         except AttributeError as e:
             logger.error('XUnitStyleExecutor:Attribute Error .. %s', e.args)
 
@@ -29,4 +30,7 @@ class XUnitStyleExecutor(Executor):
         finally:
             logger.info('Closing the connections.......')
             self._service.close()
+
+        logger.info('XUnitStyleExecutor:execute EXIT with result %s',result)
+        return result
 
