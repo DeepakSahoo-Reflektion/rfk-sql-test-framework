@@ -1,53 +1,65 @@
 from engine.service.db_service import *
-from engine.service.fs_service import *
 from engine.service.service import *
 from common.util.common_util import *
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
+
 class ServiceFacade(object):
+    '''
+    Facade implementation of the service class where all the implementation details are abstracted away from the client
+    code. A client program just have to call the serve method with the proper argument.
+    '''
 
     def __init__(self, context):
+        '''
+        Initializes the parameters of the class.
+
+        :param context:passed from the client program which is needed down the layer.
+        '''
         self._db_service = DBService(context)
         self._context = context
 
-    def _evaluate_single(self,args):
+    def _evaluate_single(self, args):
+        '''
+        Evaluates a single SQL statement, script
+
+        :param args: contains the SQL statement, script
+        :return: the result of the SQL execution in terms of ([headers],[rows])
+        '''
         if len(args) == 0:
-            logger.warn('ServiceFacade:Serve Empty args returning....')
+            logger.warn('ServiceFacade:Serve empty args returning....')
             return
 
-        logger.info('ServiceFacade:_evaluate_single with %s',args)
-        loc_type = extract_loc_type(args)
         sql = extract_qry_from(args)
-        sql_path = self._context.kv['sql_path']
-        sql_exec_type = get_input_sql_type(args)
-        logger.info('ServiceFacade:_evaluate_single with loc_type %s and sql %s and sql_path %s sql_exec_type %s', loc_type,sql,sql_path,sql_exec_type)
 
-
-
-
-        if sql_exec_type == 'sql_script':
+        if get_input_sql_type(args) == 'sql_script':
             if "/" not in sql:
                 sql = '/'.join((self._context.kv['sql_path'], sql))
 
-
-        logger.info('ServiceFacade:_evaluate_single after change sql %s', sql)
         return self._db_service.serve(sql)
 
+    def _evaluate_list(self, args):
+        '''
+        Calls the _evaulate_single() method for each argument.
 
-    def _evaluate_list(self,args):
-        logger.info('ServiceFacade:_evaluate_list ENTRY with  %s', args)
+        :param args: Takes a list of SQL statement or script for execution
+        :return: The result in list of tuples of the SQL execution result
+        '''
         ret = [self._evaluate_single(arg) for arg in args]
-        logger.info('ServiceFacade:_evaluate_list EXIT with  %s', ret)
 
+    def serve(self, args):
+        '''
+        facade method of the class. exposed to the client program.
 
-    def serve(self,args):
-        if isinstance(args,list):
+        :param args: can be list of SQL statements or scripts or single SQL statement or script
+        :return: the result of the SQL evaluation
+        '''
+        if isinstance(args, list):
             return self._evaluate_list(args)
         else:
             return self._evaluate_single(args)
-
 
     def close(self):
         logger.info('ServiceFacade:close...')
