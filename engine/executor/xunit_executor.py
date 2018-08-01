@@ -13,12 +13,17 @@ class XUnitStyleExecutor(Executor):
     def __init__(self,context):
         super().__init__()
         logger.info('XUnitStyleExecutor: Init')
-        #self._service = DBService(context)
         self._service = ServiceFacade(context)
         self._handler = SheetHandler(self._service)
 
     def execute(self, sheet):
-        logger.info('XUnitStyleExecutor:execute ENTRY with %s', sheet)
+        '''
+        Entry point of the executor. calls the handler for executing the operations.
+
+        :param sheet: as the configuration sheet instance
+        :return: SheetResult instance when complete successfully
+        '''
+        logger.debug('XUnitStyleExecutor:execute ENTRY with %s', sheet)
         try:
              result = self._handler.handle_request(sheet)
 

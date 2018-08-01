@@ -1,5 +1,6 @@
 import logging
 
+from common.const.vars import XUNIT
 from engine.service.service import *
 from engine.executor.xunit_executor import XUnitStyleExecutor
 
@@ -24,7 +25,7 @@ class ExecutorFactory:
             logger.error('ExecutorFactory: type is not provided')
             return
 
-        if type == 'xunit':
+        if type == XUNIT:
             executor = ExecutorFactory._instances.get(type,None)
             if not executor:
                 executor =  XUnitStyleExecutor(context)
