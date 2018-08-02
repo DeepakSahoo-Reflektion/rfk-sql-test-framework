@@ -1,7 +1,8 @@
 import re
 import os
-from codecs import open
 import logging
+
+from codecs import open
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -29,11 +30,7 @@ def get_input_sql_type(arg):
         return 'statement'
 
 
-def generate_sql_for_asserts(sql):
-    pass
-
-
-## TODO: revisit this
+# TODO: revisit this
 def read_file(file_loc):
     if not file_loc or len(file_loc) == 0:
         logger.error('read_file:Invalid file location')

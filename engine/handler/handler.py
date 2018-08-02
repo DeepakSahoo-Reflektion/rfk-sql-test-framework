@@ -1,6 +1,7 @@
 import logging
 
 from common.const.vars import *
+from common.util.sql_util import *
 from engine.data.result import *
 
 logging.basicConfig(level=logging.INFO)
@@ -115,6 +116,7 @@ class AssertHandler(object):
         self._service.serve(each_assert.get(EXPECTED, None))
 
         sql_query = each_assert.get(SQL, None)
+        enriched_sql_query = enrich_sql(sql_query)
         query_result = self._service.serve(sql_query)
 
         message = each_assert.get(MESSAGE, None)
