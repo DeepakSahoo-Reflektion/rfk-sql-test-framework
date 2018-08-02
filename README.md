@@ -19,6 +19,8 @@ The framework aims to provide **Unit test** and **Regression test** solutions to
  4. 
 
 ## Architecture
+### Diagrams
+ ![Alt text] (https://github.com/DeepakSahoo-Reflektion/rfk-sql-test-framework/blob/master/test_framework_seq_diagram.jpg)
 
 ## Links
 
