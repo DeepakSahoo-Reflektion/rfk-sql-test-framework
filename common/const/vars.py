@@ -19,6 +19,7 @@ EXPECTED = 'expected'
 SQL = 'sql'
 MESSAGE = 'message'
 SQL_SCRIPT='sql_script'
+CONFIG_FILE_NAME='config_file_name'
 
 #test framework constants
 STATUS_SUCCESS = 'Success'
@@ -34,3 +35,4 @@ FS = 'fs'
 COLON=':'
 TEST_UNDERSCORE='test_'
 DOT='.'
+DOLLAR='$'

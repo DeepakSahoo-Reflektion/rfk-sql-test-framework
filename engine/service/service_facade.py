@@ -1,6 +1,9 @@
+import ntpath
+
 from engine.service.db_service import *
 from engine.service.service import *
 from common.util.common_util import *
+from common.const.vars import SQL_PATH,CONFIG_FILE_NAME,DOLLAR
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
@@ -21,6 +24,18 @@ class ServiceFacade(object):
         self._db_service = DBService(context)
         self._context = context
 
+    def _resolve_placeholder(self,arg):
+        logger.info('ServiceFacade:_resolve_placeholder ENTRY with %s', arg)
+
+
+        conf_file_name = ntpath.basename(self._context.kv[CONFIG_FILE_NAME])
+
+        DEFAULT_INI_FILE_NAME=self._context.kv[SQL_PATH]+'/'+get_file_name_without_ext(conf_file_name)+'.ini'
+        logger.info('ServiceFacade:_resolve_placeholder DEFAULT_INI_FILE_NAME with %s', DEFAULT_INI_FILE_NAME)
+        sql_query = read_value_from_ini_file(DEFAULT_INI_FILE_NAME,arg[1:])
+        logger.info('ServiceFacade:_resolve_placeholder EXIT with %s',sql_query)
+        return sql_query
+
     def _evaluate_single(self, args):
         '''
         Evaluates a single SQL statement, script
@@ -29,15 +44,19 @@ class ServiceFacade(object):
         :return: the result of the SQL execution in terms of ([headers],[rows])
         '''
         if len(args) == 0:
-            logger.warn('ServiceFacade:Serve empty args returning....')
+            logger.warn('ServiceFacade:_evaluate_single empty args returning....')
             return
 
         sql = extract_qry_from(args)
 
         if get_input_sql_type(args) == 'sql_script':
             if "/" not in sql:
-                sql = '/'.join((self._context.kv['sql_path'], sql))
+                sql = '/'.join((self._context.kv[SQL_PATH], sql))
 
+        if sql.startswith('$'):
+            logger.info('starts with dollar')
+            sql = self._resolve_placeholder(sql)
+        logger.info('ServiceFacade:_evaluate_single before calling the serve %s',sql)
         return self._db_service.serve(sql)
 
     def _evaluate_list(self, args):

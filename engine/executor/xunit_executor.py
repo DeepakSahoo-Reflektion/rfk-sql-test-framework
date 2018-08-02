@@ -12,7 +12,6 @@ class XUnitStyleExecutor(Executor):
 
     def __init__(self,context):
         super().__init__()
-        logger.info('XUnitStyleExecutor: Init')
         self._service = ServiceFacade(context)
         self._handler = SheetHandler(self._service)
 
@@ -24,6 +23,7 @@ class XUnitStyleExecutor(Executor):
         :return: SheetResult instance when complete successfully
         '''
         logger.debug('XUnitStyleExecutor:execute ENTRY with %s', sheet)
+        result = None
         try:
              result = self._handler.handle_request(sheet)
 

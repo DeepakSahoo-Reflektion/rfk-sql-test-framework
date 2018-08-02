@@ -1,6 +1,7 @@
 import re
 import os
 import logging
+import configparser
 
 from codecs import open
 
@@ -46,3 +47,23 @@ def read_file(file_loc):
 
 def get_file_ext(file_name):
     return os.path.splitext(file_name)[1]
+
+def get_file_name_without_ext(file_name):
+    return os.path.splitext(file_name)[0]
+
+def read_value_from_ini_file(file_loc,key = None):
+    if not file_loc or len(file_loc) == 0 or not key:
+        logger.error('read_file:Invalid file location')
+        raise Exception('invalid file location')
+    config = configparser.ConfigParser()
+    value = None
+    try:
+        config.read(file_loc)
+        value = (config['SQL'][key])
+    except FileNotFoundError:
+        logger.error('read_file:File Not found in the location %s or key is not present %s', file_loc,key)
+        raise Exception('file not found')
+    except Exception:
+        logger.error('read_file:File Not found in the location %s or key is not present %s', file_loc,key)
+        raise Exception('file not found')
+    return value
