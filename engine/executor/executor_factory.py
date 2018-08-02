@@ -1,5 +1,6 @@
 import logging
 
+from common.const.vars import XUNIT
 from engine.service.service import *
 from engine.executor.xunit_executor import XUnitStyleExecutor
 
@@ -18,18 +19,19 @@ class ExecutorFactory:
     _instances = {}
 
     @staticmethod
-    def get_executor(type):
+    def get_executor(type,context):
+
         if not type:
             logger.error('ExecutorFactory: type is not provided')
             return
 
-        if type == 'XUnitStyle':
+        if type == XUNIT:
             executor = ExecutorFactory._instances.get(type,None)
             if not executor:
-                executor =  XUnitStyleExecutor()
+                executor =  XUnitStyleExecutor(context)
             ExecutorFactory._instances[type] = executor
             return executor
 
         else:
-            logger.warn('ExecutorFactory:get_executor invalid type')
-            return None
+            logger.error('ExecutorFactory:get_executor invalid type')
+            raise Exception('Invalid Executor Type...')
