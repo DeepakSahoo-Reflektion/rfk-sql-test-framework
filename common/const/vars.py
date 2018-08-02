@@ -1,12 +1,34 @@
+#execution type constants
+EXECUTE_ONE = 'execute-one'
+EXECUTE_ALL = 'execute-all'
+
+#configuration file constants
+SHEET_NAME = 'sheet_name'
+SQL_PATH = 'sql_path'
+NAME = 'name'
+SCRIPT_PATH = 'script_path'
+BEFORE_ONCE = 'before_once'
+BEFORE_EACH = 'before_each'
+BEFORE_TEST = 'before_test'
+AFTER_TEST = 'after_test'
+AFTER_ONCE = 'after_once'
+AFTER_EACH = 'after_each'
+TESTS = 'tests'
+ASSERTS = 'asserts'
+EXPECTED = 'expected'
+SQL = 'sql'
+MESSAGE = 'message'
+SQL_SCRIPT='sql_script'
+
+#test framework constants
+STATUS_SUCCESS = 'Success'
+STATUS_FAILURE = 'Failure'
 CASE = 'case'
 SHEET = 'sheet'
 SUITE = 'suite'
-
 XUNIT = 'xunit'
-
-BEFORE_ONCE='before_once'
-BEFORE_EACH='before_each'
-BEFORE_TEST='before_test'
-AFTER_TEST='after_test'
-AFTER_ONCE='after_once'
-AFTER_EACH='after_each'
+BDD = 'bdd'
+GIT = 'git'
+S3 = 's3'
+FS = 'fs'
+COLON=':'

@@ -41,8 +41,7 @@ class SuiteContext(object):
         return self
 
     def update_params(self,dict):
-        self.kv = dict
-        logger.info('SuiteContext:update_params with data %s',self.kv)
+        self.kv.update(dict)
         return self
 
 class SheetContext(object):
@@ -61,8 +60,7 @@ class SheetContext(object):
         return self
 
     def update_params(self,dict):
-        self.kv = dict
-        logger.info('SheetContext:update_params with data %s',self.kv)
+        self.kv.update(dict)
         return self
 
 class CaseContext(object):
