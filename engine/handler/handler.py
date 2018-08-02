@@ -1,7 +1,4 @@
 import logging
-##TODO: parse the query result in Assert_handler
-##TODO: create the sql and expected using the script_path in Assert_handler
-##TODO: if needed create separate Result class to return the results
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -44,7 +41,6 @@ class SheetHandler(object):
 
             case_name = case.get('name',None)
             case_result = self._handler.handle_request(case,self._meta_args)
-            ##self._results[case_name] = case_result
 
             count += 1
             sheet_result.add_case_result(count,case_result)
@@ -85,8 +81,6 @@ class CaseHandler(object):
 
             if assert_result.status == 'Failure':
                 case_result.update_status('Failure')
-            ##self._result['assert-{}'.format(count)]=assert_result
-
 
         self._service.serve(test_case.get('after_test', None))
         self._result = case_result
@@ -104,7 +98,6 @@ class AssertHandler(object):
 
     def content_enrich(self,args):
         pass
-
 
     def handle_request(self,each_assert,meta_args):
         self._service.serve(each_assert.get('expected', None))

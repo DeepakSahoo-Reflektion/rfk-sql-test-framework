@@ -1,26 +1,30 @@
 import logging
 
+from common.const.vars import CASE,SHEET,SUITE
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-
+##TODO: use the context variables properly in the executor
 class ContextManager(object):
+    """
+    This class is responsible to manage and create different kinds of contexts.
+    """
 
     @staticmethod
     def initialize_default(type = None):
         if not type:
             return
-        logger.info('ContextManager:initialize_default with type %s', type)
-        if type == 'case':
-            return CaseContext().with_default()
-        elif type == 'sheet':
 
+        if type == CASE:
+            return CaseContext().with_default()
+        elif type == SHEET:
             return SheetContext().with_default()
-        elif type == 'suite':
+        elif type == SUITE:
             return SuiteContext().with_default()
         else:
-            logger.error('Invalid type..')
-            raise Exception('Invalid type...')
+            logger.error('ContextManager:failed to create context,Invalid type..')
+            raise Exception('Invalid context type')
 
 
 class SuiteContext(object):
@@ -36,18 +40,10 @@ class SuiteContext(object):
         self.status = None
         return self
 
-    # def __init__(self):
-    #     pass
-    #
-    # def add_attribute(self, attr_name, attr_value=None):
-    #     self.__dict__[attr_name] = attr_value
-    #
-    # def remove_attribute(self, attr_name):
-    #     del self.__dict__[attr_name]
-    #
-    # def get_attributes(self):
-    #     return self.__dict__.items()
-
+    def update_params(self,dict):
+        self.kv = dict
+        logger.info('SuiteContext:update_params with data %s',self.kv)
+        return self
 
 class SheetContext(object):
 
@@ -68,12 +64,6 @@ class SheetContext(object):
         self.kv = dict
         logger.info('SheetContext:update_params with data %s',self.kv)
         return self
-
-    # def initialize(self, dict):
-    #     self.sql_path = dict.get('sql_path', None)
-    #     self.script_path = dict.get('script_path', None)
-    #     self.cases_count = dict.get('', None)
-
 
 class CaseContext(object):
 
