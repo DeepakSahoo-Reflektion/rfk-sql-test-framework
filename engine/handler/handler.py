@@ -117,7 +117,7 @@ class AssertHandler(object):
 
         sql_query = each_assert.get(SQL, None)
         enriched_sql_query = enrich_sql(sql_query)
-        query_result = self._service.serve(sql_query)
+        query_result = self._service.serve(enriched_sql_query)
 
         message = each_assert.get(MESSAGE, None)
 

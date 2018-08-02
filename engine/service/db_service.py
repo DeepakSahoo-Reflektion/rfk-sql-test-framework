@@ -29,7 +29,6 @@ class DBService(Service):
             - sql_expression map
         :param context:
         '''
-        logger.debug('DBService:initialization')
         self._conn = ConnectionFactory.get_connection('Snowflake')
         self._context = context
         self._sql_expr_eval_map = {
@@ -45,7 +44,6 @@ class DBService(Service):
         :param script:
         :return: doesn't return any value
         '''
-        logger.debug('DBService:run_script ENTRY script_file:%s', script)
         cur = self._conn.cursor()
         f = read_file(script)
 
@@ -116,7 +114,7 @@ class DBService(Service):
         except Exception as e:
             logger.error('DBService:_evaluate_single Exception %s', e.args)
             raise e
-        logger.info('DBService:_evaluate_single EXIT with  %s', ret)
+        logger.debug('DBService:_evaluate_single EXIT with  %s', ret)
         return ret
 
     def _evaluate_list(self, args):
@@ -129,8 +127,6 @@ class DBService(Service):
         :param args:
         :return: result of the SQL execution
         '''
-        logger.info('DBService:Serve ENTRY with args:%s', args)
-
         if isinstance(args, list):
             return self._evaluate_list(args)
         else:
