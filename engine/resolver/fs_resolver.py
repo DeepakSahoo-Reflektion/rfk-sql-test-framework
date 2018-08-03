@@ -23,9 +23,10 @@ class FSPathResolver(PathResolver):
             file_string = None
             f = open(file_path, 'r', encoding='utf-8')
             file_string = f.read()
-            f.close()
         except Exception as e:
             LOGGER.error('Error while reading the file.. %s',e.args)
             raise e
+        finally:
+            f.close()
         return file_string
 
