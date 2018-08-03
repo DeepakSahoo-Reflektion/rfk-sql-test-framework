@@ -5,7 +5,7 @@ from engine.service.service import *
 from engine.executor.xunit_executor import XUnitStyleExecutor
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+LOGGER = logging.getLogger()
 
 
 class ExecutorFactory:
@@ -23,7 +23,7 @@ class ExecutorFactory:
     def get_executor(type, context):
 
         if not type:
-            logger.error('ExecutorFactory: type is not provided')
+            LOGGER.error('ExecutorFactory: type is not provided')
             return
 
         if type == XUNIT:
@@ -34,5 +34,5 @@ class ExecutorFactory:
             return executor
 
         else:
-            logger.error('ExecutorFactory:get_executor invalid type')
+            LOGGER.error('ExecutorFactory:get_executor invalid type')
             raise Exception('Invalid Executor Type...')
