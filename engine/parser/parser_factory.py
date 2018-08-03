@@ -5,7 +5,7 @@ from engine.parser.yaml_parser import *
 
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+LOGGER = logging.getLogger()
 
 class ParserFactory:
     '''
@@ -21,7 +21,7 @@ class ParserFactory:
     @staticmethod
     def get_parser(type):
         if not type:
-            logger.error('ExecutorFactory: type is not provided')
+            LOGGER.error('ExecutorFactory: type is not provided')
             return
 
         if type in ('json','.json'):
@@ -38,5 +38,5 @@ class ParserFactory:
             return parser
 
         else:
-            logger.warn('ExecutorFactory:get_executor invalid type')
+            LOGGER.warn('ExecutorFactory:get_executor invalid type')
             return None
