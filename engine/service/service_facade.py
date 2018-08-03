@@ -3,6 +3,7 @@ import ntpath
 from engine.service.db_service import *
 from engine.service.service import *
 from common.util.common_util import *
+from common.util.sql_util import *
 from common.const.vars import SQL_PATH,CONFIG_FILE_NAME,DOLLAR
 
 logging.basicConfig(level=logging.DEBUG)
@@ -76,7 +77,9 @@ class ServiceFacade(object):
         :return: the result of the SQL evaluation
         '''
         if isinstance(args, list):
-            return self._evaluate_list(args)
+            snowsql_command_queries, other_execution_queries = seg_exec_types(args)
+            execute_snowsql_command(snowsql_command_queries)
+            return self._evaluate_list(other_execution_queries)
         else:
             return self._evaluate_single(args)
 

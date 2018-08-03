@@ -1,3 +1,8 @@
+import os
+
+#SNOWSQL_HOME = os.getenv('SNOWSQL_HOME')
+#SNOWSQL_CMD = '%s/bin/snowsql' % SNOWSQL_HOME
+
 #execution type constants
 EXECUTE_ONE = 'execute-one'
 EXECUTE_ALL = 'execute-all'
@@ -33,6 +38,7 @@ GIT = 'git'
 S3 = 's3'
 FS = 'fs'
 COLON=':'
+UNDERSCORE='_'
 TEST_UNDERSCORE='test_'
 DOT='.'
 DOLLAR='$'
