@@ -4,8 +4,7 @@ from engine.executor.executor import Executor
 from engine.handler.handler import SheetHandler
 from engine.service.service_facade import ServiceFacade
 
-logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class XUnitStyleExecutor(Executor):

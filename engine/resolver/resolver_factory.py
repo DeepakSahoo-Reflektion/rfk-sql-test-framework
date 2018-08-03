@@ -2,8 +2,7 @@ import logging
 from engine.resolver.fs_resolver import *
 from common.const.vars import FS
 
-logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class ResolverFactory:

@@ -4,8 +4,7 @@ import subprocess
 
 from common.const.vars import *
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def tables_in_query(sql_str):
@@ -35,7 +34,7 @@ def return_table_name(org_name):
     elif count_of_dots == 2:
         new_name = org_name.split(DOT)[0] + DOT + org_name.split(DOT)[1] + '.test_' + org_name.split(DOT)[2]
     else:
-        logger.error('error during table name substitution')
+        LOGGER.error('error during table name substitution')
         raise Exception('error during table name substitution')
     return new_name
 
@@ -53,7 +52,7 @@ def enrich_sql(org_sql):
     new_sql = create_new_sql(org_sql)
     QRY_TEMPLATE = """{org_sql} UNION {new_sql} MINUS {org_sql} INTERSECT {new_sql}""".format(org_sql=org_sql,
                                                                                               new_sql=new_sql)
-    logger.info('sql_util:enrich_sql: EXIT with %s', QRY_TEMPLATE)
+    LOGGER.info('sql_util:enrich_sql: EXIT with %s', QRY_TEMPLATE)
     return QRY_TEMPLATE
 
 
@@ -61,21 +60,16 @@ def seg_exec_types(args):
     snowsql_command_queries = [arg for arg in args if arg.startswith('snowsql>')]
     snowsql_command_queries_without_prompt = [arg.split('snowsql>')[1] for arg in args if arg.startswith('snowsql>')]
     others = [item for item in args if item not in snowsql_command_queries]
-    logger.info('sql_util:seg_exec_types with %s',snowsql_command_queries_without_prompt)
-    logger.info('sql_util:seg_exec_types with %s', others)
-    return snowsql_command_queries_without_prompt,others
+    LOGGER.info('sql_util:seg_exec_types with %s', snowsql_command_queries_without_prompt)
+    LOGGER.info('sql_util:seg_exec_types with %s', others)
+    return snowsql_command_queries_without_prompt, others
 
 
 def execute_snowsql_command(args):
-    ##
-    ##snowsql:put file:///Users/deepak/Downloads/data.csv @~/staged;
-    ##snowsql:copy into TEST.TEMP.EMP from @~/staged file_format = (type = csv skip_header = 1);
-    ##
     SNOW_SQL_TEMPLATE = "/Applications/SnowSQL.app/Contents/MacOS/snowsql -o exit_on_error=true -o log_level=DEBUG -q '{}'"
-
 
     for arg in args:
         SNOW_SQL_TEMPLATE = SNOW_SQL_TEMPLATE.format(arg)
-        logger.info('sql_util:execute_snowsql_command with argument %s',SNOW_SQL_TEMPLATE)
+        LOGGER.info('sql_util:execute_snowsql_command with argument %s', SNOW_SQL_TEMPLATE)
         ret = subprocess.call(SNOW_SQL_TEMPLATE, shell=True)
-        logger.info('sql_util:execute_snowsql_command with return %s',ret)
+        LOGGER.info('sql_util:execute_snowsql_command with return %s', ret)

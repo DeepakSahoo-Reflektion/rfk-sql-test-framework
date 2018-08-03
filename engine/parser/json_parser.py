@@ -2,8 +2,7 @@ import json
 import logging
 from engine.parser.parser import ConfigParser
 
-logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class JsonParser(ConfigParser):

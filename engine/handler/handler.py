@@ -4,8 +4,7 @@ from common.const.vars import *
 from common.util.sql_util import *
 from engine.data.result import *
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class SheetHandler(object):
@@ -26,16 +25,16 @@ class SheetHandler(object):
         self._meta_args = {}
 
     def _create_meta_args(self, test_sheet):
-        logger.debug('SheetHandler:_create_meta_args ENTRY with %s', test_sheet)
+        LOGGER.debug('SheetHandler:_create_meta_args ENTRY with %s', test_sheet)
 
         self._meta_args[NAME] = test_sheet.get(NAME, None)
         self._meta_args[SQL_PATH] = test_sheet.get(SQL_PATH, None)
         self._meta_args[SCRIPT_PATH] = test_sheet.get(SCRIPT_PATH, None)
 
-        logger.info('SheetHandler:_create_meta_args EXIT with %s', test_sheet)
+        LOGGER.info('SheetHandler:_create_meta_args EXIT with %s', test_sheet)
 
     def handle_request(self, test_sheet):
-        logger.debug('SheetHandler:handle_request ENTRY with %s', test_sheet)
+        LOGGER.debug('SheetHandler:handle_request ENTRY with %s', test_sheet)
         self._create_meta_args(test_sheet)
         self._service.serve(test_sheet.get(BEFORE_ONCE, None))
 
@@ -59,7 +58,7 @@ class SheetHandler(object):
 
         self._service.serve(test_sheet.get(AFTER_ONCE, None))
         self._result = sheet_result
-        logger.info('SheetHandler:handle_request EXIT with %s', self._result)
+        LOGGER.info('SheetHandler:handle_request EXIT with %s', self._result)
         return self._result
 
 
@@ -75,7 +74,7 @@ class CaseHandler(object):
         self._result = None
 
     def handle_request(self, test_case, meta_args):
-        logger.debug('CaseHandler:handle_request ENTRY with %s', test_case)
+        LOGGER.debug('CaseHandler:handle_request ENTRY with %s', test_case)
         self._service.serve(test_case.get(BEFORE_TEST, None))
 
         case_name = test_case.get(NAME, None)
@@ -95,7 +94,7 @@ class CaseHandler(object):
 
         self._service.serve(test_case.get(AFTER_TEST, None))
         self._result = case_result
-        logger.info('CaseHandler:handle_request with result %s', case_result)
+        LOGGER.info('CaseHandler:handle_request with result %s', case_result)
         return self._result
 
 
@@ -126,5 +125,5 @@ class AssertHandler(object):
             status = STATUS_SUCCESS
 
         self._result = AssertResult(message=message, status=status)
-        logger.info('AssertHandler:handle_request EXIT with %s', self._result)
+        LOGGER.info('AssertHandler:handle_request EXIT with %s', self._result)
         return self._result

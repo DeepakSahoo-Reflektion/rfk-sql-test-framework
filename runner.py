@@ -9,8 +9,8 @@ from engine.resolver.resolver_factory import *
 from engine.parser.parser_factory import ParserFactory
 from engine.data.context import *
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+logging.basicConfig(level=logging.DEBUG)
+LOGGER = logging.getLogger()
 
 
 def invoke(exec_type, file_path_loc, loc_type):

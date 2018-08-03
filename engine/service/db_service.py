@@ -4,11 +4,10 @@ from codecs import open
 
 from common.util.file_util import *
 from common.util.common_util import *
-from common.db.connection import ConnectionFactory
+from common.db.connection_factory import ConnectionFactory
 from engine.service.service import *
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class DBService(Service):
@@ -52,11 +51,11 @@ class DBService(Service):
                 for ret in cur:
                     pass
         except Exception as e:
-            logger.error('DBService:run_script error while executing the script %s', e.args)
+            LOGGER.error('DBService:run_script error while executing the script %s', e.args)
             raise e
         finally:
             cur.close()
-        logger.info('DBService:run_script EXIT')
+        LOGGER.info('DBService:run_script EXIT')
 
     def run_statement(self, statement):
         '''
@@ -65,7 +64,7 @@ class DBService(Service):
         :param statement: the SQL statement
         :return: the header and rows values if any.
         '''
-        logger.info('DBService:run_statment ENTRY with :%s', statement)
+        LOGGER.info('DBService:run_statment ENTRY with :%s', statement)
         try:
             row_data = []
             headers = []
@@ -77,9 +76,9 @@ class DBService(Service):
             if row is not None:
                 headers = [i[0] for i in row.description]
 
-            logger.debug('DBService:run_statment EXIT headers:%s rows:%s', headers, row_data)
+            LOGGER.debug('DBService:run_statment EXIT headers:%s rows:%s', headers, row_data)
         except Exception as e:
-            logger.error('DBService:run_statment error which executing the sql', e.args)
+            LOGGER.error('DBService:run_statment error which executing the sql', e.args)
             raise e
         finally:
             cur.close()
@@ -96,10 +95,10 @@ class DBService(Service):
         :param args: accepts the SQL statement as parameter
         :return:
         '''
-        logger.info('DBService:_evaluate_single ENTRY with  %s', args)
+        LOGGER.info('DBService:_evaluate_single ENTRY with  %s', args)
 
         if len(args) == 0:
-            logger.warn('DBService:_evaluate_single empty args returning....')
+            LOGGER.warn('DBService:_evaluate_single empty args returning....')
             return
 
         sql_exec_type = get_input_sql_type(args)
@@ -108,12 +107,12 @@ class DBService(Service):
             func = get_function_by_name(self, func_type)
             ret = func(args)
         except AttributeError as e:
-            logger.error('DBService:_evaluate_single AttributeError %s', e.args)
+            LOGGER.error('DBService:_evaluate_single AttributeError %s', e.args)
             raise e
         except Exception as e:
-            logger.error('DBService:_evaluate_single Exception %s', e.args)
+            LOGGER.error('DBService:_evaluate_single Exception %s', e.args)
             raise e
-        logger.debug('DBService:_evaluate_single EXIT with  %s', ret)
+        LOGGER.debug('DBService:_evaluate_single EXIT with  %s', ret)
         return ret
 
     def _evaluate_list(self, args):
@@ -132,9 +131,9 @@ class DBService(Service):
             return self._evaluate_single(args)
 
     def close(self):
-        logger.info('DBService:Close the connections')
+        LOGGER.info('DBService:Close the connections')
         try:
             self._conn.close()
         except:
-            logger.error('DBService:Error closing connections')
+            LOGGER.error('DBService:Error closing connections')
             raise Exception('DBService:Error closing DB connection')

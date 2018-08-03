@@ -4,8 +4,7 @@ from common.const.vars import XUNIT
 from engine.service.service import *
 from engine.executor.xunit_executor import XUnitStyleExecutor
 
-logging.basicConfig(level=logging.INFO)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class ExecutorFactory:
