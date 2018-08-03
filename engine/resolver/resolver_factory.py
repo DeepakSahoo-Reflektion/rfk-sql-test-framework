@@ -1,5 +1,6 @@
 import logging
 from engine.resolver.fs_resolver import *
+from common.const.vars import FS
 
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger()
@@ -28,7 +29,7 @@ class ResolverFactory:
             LOGGER.error('ExecutorFactory: type is not provided')
             return
 
-        if type == 'fs':
+        if type == FS:
             resolver = ResolverFactory._instances.get(type, None)
             if not resolver:
                 resolver = FSPathResolver()
