@@ -7,6 +7,7 @@ from engine.executor.xunit_executor import XUnitStyleExecutor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+
 class ExecutorFactory:
     '''
     Factory for the executor. As of now only one type of executor is supported.
@@ -19,16 +20,16 @@ class ExecutorFactory:
     _instances = {}
 
     @staticmethod
-    def get_executor(type,context):
+    def get_executor(type, context):
 
         if not type:
             logger.error('ExecutorFactory: type is not provided')
             return
 
         if type == XUNIT:
-            executor = ExecutorFactory._instances.get(type,None)
+            executor = ExecutorFactory._instances.get(type, None)
             if not executor:
-                executor =  XUnitStyleExecutor(context)
+                executor = XUnitStyleExecutor(context)
             ExecutorFactory._instances[type] = executor
             return executor
 
