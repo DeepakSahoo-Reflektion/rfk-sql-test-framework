@@ -1,32 +1,19 @@
-# Project: rfk-sql-test-framework
-
-The framework aims to provide **Unit test** and **Regression test** solutions to the SQL queries in the ETL repository.
-
-## Features
-
- - Provides unit test and regression test solutions.
- - Provides a cumulative test reports of total number test cases and success.
- - Accepts different types of test configuration files like - json, yaml etc.
- - Supports variety of resources like - filesystem, git and s3.
- - Can be extended in future.
-
-
-## Usage
-
- 1. git clone repository
- 2. Run the start.sh :- this will 
- 3. command to run:-
- 4. 
-
-## Architecture
-### Diagrams
-
- ![alt text](docs/test_framework_seq_diagram.png "seq diagram")
-	![class_diagram](docs/test_framework_class_diagram-Page-2.jpg)
+Contents
+=========
+ * [Features](#features)
+ * [Diagrams](#diagrams)
+ 
+ 
+ 
+Features
+--------
  
 
-## Links
 
- - Documentation
- - JIRA
- - 
+### Diagrams
+
+![alt text](docs/test_framework_seq_diagram.png "seq diagram")
+![class_diagram](docs/test_framework_class_diagram-Page-2.jpg)
+ 
+
+
