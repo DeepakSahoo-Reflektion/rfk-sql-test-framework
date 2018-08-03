@@ -1,10 +1,25 @@
 import yaml
 import os
+import logging
 from engine.parser.parser import ConfigParser
 
-## TODO: exception handling and logging
-## TODO: this type is here to parse to a specific class type , not using as of now
-class YamlParser(ConfigParser):
+LOGGER = logging.getLogger(__name__)
 
-    def parse(self, file,type = None):
-        return yaml.safe_load(file)
+
+class YamlParser(ConfigParser):
+    '''
+    Yaml implementation of the ConfigParser
+    '''
+
+    def parse(self, file, type=None):
+        '''
+        Basically parses a yaml file into a dict.
+        :param file:
+        :param type:
+        :return:
+        '''
+        try:
+            return yaml.safe_load(file)
+        except Exception as e:
+            LOGGER.error('Failed to parse the YAML file %s', e.args)
+            raise e

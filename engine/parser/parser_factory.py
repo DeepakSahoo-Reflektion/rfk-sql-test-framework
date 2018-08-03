@@ -3,9 +3,8 @@ import logging
 from engine.parser.json_parser import *
 from engine.parser.yaml_parser import *
 
+LOGGER = logging.getLogger(__name__)
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
 
 class ParserFactory:
     '''
@@ -21,16 +20,16 @@ class ParserFactory:
     @staticmethod
     def get_parser(type):
         if not type:
-            logger.error('ExecutorFactory: type is not provided')
+            LOGGER.error('ExecutorFactory: type is not provided')
             return
 
-        if type in ('json','.json'):
-            parser = ParserFactory._instances.get(type,None)
+        if type in ('json', '.json'):
+            parser = ParserFactory._instances.get(type, None)
             if not parser:
-                parser =  JsonParser()
+                parser = JsonParser()
                 ParserFactory._instances[type] = parser
             return parser
-        elif type in ('yaml','.yaml','yml','.yml'):
+        elif type in ('yaml', '.yaml', 'yml', '.yml'):
             parser = ParserFactory._instances.get(type, None)
             if not parser:
                 parser = YamlParser()
@@ -38,5 +37,5 @@ class ParserFactory:
             return parser
 
         else:
-            logger.warn('ExecutorFactory:get_executor invalid type')
+            LOGGER.warn('ExecutorFactory:get_executor invalid type')
             return None

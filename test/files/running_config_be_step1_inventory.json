@@ -3,8 +3,8 @@
   "description": "Test cases for BE workflow step 1: inventory triggers",
   "author": "Deepak",
   "date": "20180711",
-  "sql_path": "fs:/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests", //search the sql queries values here
-  "script_path":"fs:/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
+  "sql_path": "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests",
+  "script_path":"/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
   "before_once": [
     ""
   ],
@@ -17,13 +17,13 @@
       "name": "test1",
       "description": "description1",
       "before_test": [
-        "insert_user_event1.sql"
+        "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_user_event1.sql"
       ],
       "asserts": [
         {
           "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
           "expected": [
-            "insert_.sql"
+            "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests/insert_exp.sql"
           ],
           "message": "Count per trigger is different"
         }
@@ -35,11 +35,11 @@
     }
   ],
   "after_each": [
-    " ",
-    " "
+    "",
+    ""
   ],
   "after_once": [
-    " ",
-    " "
+    "",
+    ""
   ]
 }

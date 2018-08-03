@@ -9,8 +9,8 @@ from engine.resolver.resolver_factory import *
 from engine.parser.parser_factory import ParserFactory
 from engine.data.context import *
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+logging.basicConfig(level=logging.DEBUG)
+LOGGER = logging.getLogger()
 
 
 def invoke(exec_type, file_path_loc, loc_type):
@@ -23,6 +23,7 @@ def invoke(exec_type, file_path_loc, loc_type):
     sheet = ParserFactory.get_parser(file_ext).parse(file)
 
     context.update_params(sheet)
+    context.update_params({CONFIG_FILE_NAME:file_path_loc})
 
     result = ExecutorFactory.get_executor(exec_type, context).execute(sheet)
 

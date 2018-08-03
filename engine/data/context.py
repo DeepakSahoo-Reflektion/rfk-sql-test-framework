@@ -1,9 +1,10 @@
 import logging
 
-from common.const.vars import CASE,SHEET,SUITE
+from common.const.vars import CASE, SHEET, SUITE
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+
 
 ##TODO: use the context variables properly in the executor
 class ContextManager(object):
@@ -12,7 +13,7 @@ class ContextManager(object):
     """
 
     @staticmethod
-    def initialize_default(type = None):
+    def initialize_default(type=None):
         if not type:
             return
 
@@ -28,7 +29,6 @@ class ContextManager(object):
 
 
 class SuiteContext(object):
-
     def with_default(self):
         self.suit_data = None
         self.kv = {}
@@ -40,12 +40,12 @@ class SuiteContext(object):
         self.status = None
         return self
 
-    def update_params(self,dict):
+    def update_params(self, dict):
         self.kv.update(dict)
         return self
 
-class SheetContext(object):
 
+class SheetContext(object):
     def with_default(self):
         self.sheet_data = None
         self.kv = {}
@@ -59,12 +59,12 @@ class SheetContext(object):
         self.results = None
         return self
 
-    def update_params(self,dict):
+    def update_params(self, dict):
         self.kv.update(dict)
         return self
 
-class CaseContext(object):
 
+class CaseContext(object):
     def with_default(self):
         self.case_data = None
         self.kv = {}

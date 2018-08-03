@@ -1,0 +1,45 @@
+{
+  "name": "inventory triggers test",
+  "description": "Test cases for BE workflow step 1: inventory triggers",
+  "author": "Deepak",
+  "date": "20180711",
+  "sql_path": "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/tests",
+  "script_path":"/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/behavioral_email/workflow_step1_inventory_triggers_hourly.sql",
+  "before_once": [
+    ""
+  ],
+  "before_each": [
+    "TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows","TRUNCATE TABLE TEST.ETL.user_events","SET DATE='20180723'","SET HOUR='03'",
+    "TRUNCATE TABLE TEST.PUBLIC.product_state_changes","USE TEST"
+  ],
+  "tests": [
+    {
+      "name": "test1",
+      "description": "description1",
+      "before_test": [
+        "insert_user_event1.sql"
+      ],
+      "asserts": [
+        {
+          "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
+          "expected": [
+            "$insert1","snowsql>put file:///Users/deepak/Downloads/data1.csv @~/staged;","$insert2"
+          ],
+          "message": "Count per trigger is different"
+        }
+      ],
+      "after_test": [
+        "TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows","TRUNCATE TABLE TEST.ETL.user_events",
+    "TRUNCATE TABLE TEST.PUBLIC.product_state_changes"
+      ]
+    }
+  ],
+  "after_each": [
+    "",
+    ""
+  ],
+  "after_once": [
+    "",
+    ""
+  ]
+}
