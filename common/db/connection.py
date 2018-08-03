@@ -1,17 +1,18 @@
 import abc
-from common.db.snowflake_connection import SnowflakeConnection
-
-class ConnectionFactory(object):
-
-    @staticmethod
-    def get_connection(self, db_type = 'Snowflake'):
-        if db_type == 'Snowflake':
-            return SnowflakeConnection().get_connection()
-        else:
-            return None
 
 class Connection(metaclass=abc.ABCMeta):
+    '''
+    Interface of the Connection wrapper.
+    SnowflakeConnection class is a child implementation of this interface.
+    '''
 
     @abc.abstractmethod
-    def get_connection(self,*args,**kwargs):
+    def get_connection(self, *args, **kwargs):
+        '''
+        Abstract method needs to be overriden in the child class. Must return their native
+        connection.
+        :param args:
+        :param kwargs:
+        :return:
+        '''
         pass
