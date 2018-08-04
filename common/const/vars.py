@@ -47,3 +47,9 @@ UNDERSCORE = '_'
 TEST_UNDERSCORE = 'test_'
 DOT = '.'
 DOLLAR = '$'
+
+#command line constants
+EXEC_STRATEGY = 'exec_strategy'
+LOC_TYPE = 'loc_type'
+EXEC_TYPE = 'exec_type'
+FILE_PATH_LOC = 'file_path_location'

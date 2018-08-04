@@ -23,7 +23,7 @@ def invoke(exec_type, file_path_loc, loc_type):
     sheet = ParserFactory.get_parser(file_ext).parse(file)
 
     context.update_params(sheet)
-    context.update_params({CONFIG_FILE_NAME:file_path_loc})
+    context.update_params({CONFIG_FILE_NAME: file_path_loc})
 
     result = ExecutorFactory.get_executor(exec_type, context).execute(sheet)
 
@@ -46,16 +46,16 @@ def invoke_single(exec_type, file_path_loc, loc_type):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('exec_strategy', type=str, choices=[EXECUTE_ONE, EXECUTE_ALL],
+    parser.add_argument(EXEC_STRATEGY, type=str, choices=[EXECUTE_ONE, EXECUTE_ALL],
                         help='execution type ')
 
-    parser.add_argument('loc_type', type=str, choices=[GIT, S3, FS],
+    parser.add_argument(LOC_TYPE, type=str, choices=[GIT, S3, FS],
                         help='location type')
 
-    parser.add_argument('exec_type', type=str, choices=[XUNIT, BDD],
+    parser.add_argument(EXEC_TYPE, type=str, choices=[XUNIT, BDD],
                         help='location type')
 
-    parser.add_argument('file_path_location', type=str,
+    parser.add_argument(FILE_PATH_LOC, type=str,
                         help='file location / path')
 
     args = parser.parse_args()
