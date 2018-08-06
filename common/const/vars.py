@@ -14,6 +14,7 @@ EXECUTE_ALL = 'execute-all'
 
 # configuration file constants
 SHEET_NAME = 'sheet_name'
+SHEET_DATA='sheet_data'
 SQL_PATH = 'sql_path'
 NAME = 'name'
 SCRIPT_PATH = 'script_path'
@@ -37,6 +38,7 @@ STATUS_FAILURE = 'Failure'
 CASE = 'case'
 SHEET = 'sheet'
 SUITE = 'suite'
+ASSERT='assert'
 XUNIT = 'xunit'
 BDD = 'bdd'
 GIT = 'git'
@@ -47,3 +49,14 @@ UNDERSCORE = '_'
 TEST_UNDERSCORE = 'test_'
 DOT = '.'
 DOLLAR = '$'
+
+#command line constants
+EXEC_STRATEGY = 'exec_strategy'
+LOC_TYPE = 'loc_type'
+EXEC_TYPE = 'exec_type'
+FILE_PATH_LOC = 'file_path_location'
+FILE_EXT='file_ext'
+
+# instance constants
+SERVICE_INSTANCE = 'service_instance'
+HANDLER_INSTANCE = 'handler_instance'

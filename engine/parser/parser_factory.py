@@ -1,7 +1,6 @@
-import logging
-
 from engine.parser.json_parser import *
 from engine.parser.yaml_parser import *
+from common.const.vars import FILE_EXT
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,7 +17,9 @@ class ParserFactory:
     _instances = {}
 
     @staticmethod
-    def get_parser(type):
+    def get_parser(context):
+        type = context.get_param(FILE_EXT)
+
         if not type:
             LOGGER.error('ExecutorFactory: type is not provided')
             return
@@ -35,7 +36,6 @@ class ParserFactory:
                 parser = YamlParser()
                 ParserFactory._instances[type] = parser
             return parser
-
         else:
             LOGGER.warn('ExecutorFactory:get_executor invalid type')
             return None

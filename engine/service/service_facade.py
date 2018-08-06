@@ -28,9 +28,10 @@ class ServiceFacade(object):
     def _resolve_placeholder(self, arg):
         LOGGER.info('ServiceFacade:_resolve_placeholder ENTRY with %s', arg)
 
-        conf_file_name = ntpath.basename(self._context.kv[CONFIG_FILE_NAME])
+        #conf_file_name = ntpath.basename(self._context.kv[CONFIG_FILE_NAME])
+        conf_file_name = ntpath.basename(self._context.params[FILE_PATH_LOC])
 
-        DEFAULT_INI_FILE_NAME = self._context.kv[SQL_PATH] + '/' + get_file_name_without_ext(conf_file_name) + '.ini'
+        DEFAULT_INI_FILE_NAME = self._context.get_data()[SQL_PATH] + '/' + get_file_name_without_ext(conf_file_name) + '.ini'
         LOGGER.info('ServiceFacade:_resolve_placeholder DEFAULT_INI_FILE_NAME with %s', DEFAULT_INI_FILE_NAME)
         sql_query = read_value_from_ini_file(DEFAULT_INI_FILE_NAME, arg[1:])
         LOGGER.info('ServiceFacade:_resolve_placeholder EXIT with %s', sql_query)
@@ -48,10 +49,11 @@ class ServiceFacade(object):
             return
 
         sql = extract_qry_from(args)
+        LOGGER.info('----**** SQL_PATH****',self._context.get_data())
 
         if get_input_sql_type(args) == 'sql_script':
             if "/" not in sql:
-                sql = '/'.join((self._context.kv[SQL_PATH], sql))
+                sql = '/'.join((self._context.get_data()[SQL_PATH], sql))
 
         if sql.startswith('$'):
             LOGGER.info('starts with dollar')
