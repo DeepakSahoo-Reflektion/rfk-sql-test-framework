@@ -23,7 +23,7 @@
         {
           "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
           "expected": [
-            "$insert1","snowsql>put file:///Users/deepak/Downloads/data1.csv @~/staged;","$insert2"
+            "$insert1",""
           ],
           "message": "Count per trigger is different"
         }

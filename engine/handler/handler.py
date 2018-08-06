@@ -1,8 +1,8 @@
-import logging
-
 from common.const.vars import *
 from common.util.sql_util import *
 from engine.data.result import *
+from engine.data.context import ContextManager
+from engine.service.service_facade import ServiceFacade
 
 LOGGER = logging.getLogger(__name__)
 
@@ -13,53 +13,39 @@ class SheetHandler(object):
     one instead of doing it all alone.
     '''
 
-    def __init__(self, service):
+    def __init__(self, context):
         '''
-        Initializes the paramters for the SheetHandler.
+        Initializes the paramters for the SheetHandler. We have used the DTO pattern to communicate between different layers.
+        Here the context objects act as Data transfer objects.
 
-        :param service: the type of Service implementation class.
+        :param service: the type of Context, here SheetContext
         '''
-        self._service = service
-        self._handler = CaseHandler(service)
-        self._result = None
-        self._meta_args = {}
+        self._handler = CaseHandler(context)
+        self._service = context.get_instance(SERVICE_INSTANCE)
 
-    def _create_meta_args(self, test_sheet):
-        LOGGER.debug('SheetHandler:_create_meta_args ENTRY with %s', test_sheet)
+    def handle_request(self, context):
+        sheet_data = context.get_data()
+        LOGGER.info('SheetHandler:handle_request ENTRY with %s', sheet_data)
+        self._service.serve(sheet_data.get(BEFORE_ONCE, None))
+        result = SheetResult(name=sheet_data.get(NAME, None), status=STATUS_SUCCESS)
 
-        self._meta_args[NAME] = test_sheet.get(NAME, None)
-        self._meta_args[SQL_PATH] = test_sheet.get(SQL_PATH, None)
-        self._meta_args[SCRIPT_PATH] = test_sheet.get(SCRIPT_PATH, None)
-
-        LOGGER.info('SheetHandler:_create_meta_args EXIT with %s', test_sheet)
-
-    def handle_request(self, test_sheet):
-        LOGGER.debug('SheetHandler:handle_request ENTRY with %s', test_sheet)
-        self._create_meta_args(test_sheet)
-        self._service.serve(test_sheet.get(BEFORE_ONCE, None))
-
-        sheet_name = test_sheet.get(NAME, None)
-        sheet_result = SheetResult(name=sheet_name, status=STATUS_SUCCESS)
         count = 0
+        for case in sheet_data.get(TESTS, None):
+            self._service.serve(sheet_data.get(BEFORE_EACH, None))
 
-        for case in test_sheet.get(TESTS, None):
-            self._service.serve(test_sheet.get(BEFORE_EACH, None))
-
-            case_name = case.get(NAME, None)
-            case_result = self._handler.handle_request(case, self._meta_args)
-
+            case_context = ContextManager.initialize_default(CASE).update_data(case).update_params(
+                {SCRIPT_PATH: sheet_data.get(SCRIPT_PATH, None)})
+            context.update_contexts({'Context-{}'.format(count): self._handler.handle_request(case_context)})
             count += 1
-            sheet_result.add_case_result(count, case_result)
 
-            if case_result.status == STATUS_FAILURE:
-                sheet_result.update_status(STATUS_FAILURE)
+            LOGGER.info('will run after each over..')
+            self._service.serve(sheet_data.get(AFTER_EACH, None))
 
-            self._service.serve(test_sheet.get(AFTER_EACH, None))
-
-        self._service.serve(test_sheet.get(AFTER_ONCE, None))
-        self._result = sheet_result
-        LOGGER.info('SheetHandler:handle_request EXIT with %s', self._result)
-        return self._result
+        self._service.serve(sheet_data.get(AFTER_ONCE, None))
+        ## TODO:result
+        context.update_result(result)
+        LOGGER.info('SheetHandler:handle_request EXIT with %s', context)
+        return context
 
 
 class CaseHandler(object):
@@ -68,62 +54,63 @@ class CaseHandler(object):
     Delegates the assert operations to the AssertHandler
     '''
 
-    def __init__(self, service):
-        self._service = service
-        self._handler = AssertHandler(service)
-        self._result = None
+    def __init__(self, context):
+        self._handler = AssertHandler(context)
+        self._service = context.get_instance(SERVICE_INSTANCE)
 
-    def handle_request(self, test_case, meta_args):
-        LOGGER.debug('CaseHandler:handle_request ENTRY with %s', test_case)
-        self._service.serve(test_case.get(BEFORE_TEST, None))
+    def handle_request(self, context):
+        case_data = context.get_data()
+        LOGGER.info('CaseHandler:handle_request ENTRY with %s', case_data)
 
-        case_name = test_case.get(NAME, None)
-
-        self._service.serve(meta_args[SCRIPT_PATH])
+        self._service.serve(case_data.get(BEFORE_TEST, None))
+        self._service.serve(context.get_param(SCRIPT_PATH))
+        LOGGER.info('CaseHandler:handle_request ENTRY with %s', case_data)
         count = 0
-        case_result = CaseResult(name=case_name, status=STATUS_SUCCESS)
-        for each_assert in test_case.get(ASSERTS, None):
-
-            assert_result = self._handler.handle_request(each_assert, meta_args)
+        for each_assert in case_data.get(ASSERTS, None):
+            assert_context = ContextManager.initialize_default(ASSERT).update_data(each_assert)
+            context.update_contexts({'Context-{}'.format(count): self._handler.handle_request(assert_context)})
             count += 1
 
-            case_result.add_assert_result(count, assert_result)
+            # if case_result.status == STATUS_FAILURE:
+            #     sheet_result.update_status(STATUS_FAILURE)
 
-            if assert_result.status == STATUS_FAILURE:
-                case_result.update_status(STATUS_FAILURE)
+        self._service.serve(case_data.get(AFTER_TEST, None))
 
-        self._service.serve(test_case.get(AFTER_TEST, None))
-        self._result = case_result
-        LOGGER.info('CaseHandler:handle_request with result %s', case_result)
-        return self._result
+        ## TODO: status
+        result = CaseResult(context.get_param(NAME), status=STATUS_SUCCESS)
+        context.update_result(result)
+        return context
 
 
-## TODO: to change the sql query replace enricher with a decorator
 class AssertHandler(object):
     '''
     Handles the execution of the sql script and statements inside the asserts block inside the configuration.
     '''
 
-    def __init__(self, service):
-        self._service = service
-        self._result = None
+    def __init__(self, context):
+        self._service = context.get_instance(SERVICE_INSTANCE)
 
-    def content_enrich(self, args):
-        pass
+    def handle_request(self, context):
+        assert_data = context.get_data()
+        LOGGER.info('AssertHandler with assert_data %s', assert_data)
 
-    def handle_request(self, each_assert, meta_args):
-        self._service.serve(each_assert.get(EXPECTED, None))
+        self._service.serve(assert_data.get(EXPECTED, None))
 
-        sql_query = each_assert.get(SQL, None)
+        sql_query = assert_data.get(SQL, None)
+        LOGGER.info('AssertHandler with sql_query %s', sql_query)
         enriched_sql_query = enrich_sql(sql_query)
+        LOGGER.info('AssertHandler with enriched_sql_query %s', enriched_sql_query)
         query_result = self._service.serve(enriched_sql_query)
 
-        message = each_assert.get(MESSAGE, None)
+        message = assert_data.get(MESSAGE, None)
+        LOGGER.info('AssertHandler with message %s', message)
 
         status = STATUS_FAILURE
         if len(query_result) != 0 and len(query_result[1]) == 0:
             status = STATUS_SUCCESS
 
-        self._result = AssertResult(message=message, status=status)
-        LOGGER.info('AssertHandler:handle_request EXIT with %s', self._result)
-        return self._result
+        result = AssertResult(message=message, status=status)
+
+        LOGGER.info('AssertHandler:handle_request EXIT with %s', result)
+        context.update_result(result)
+        return context

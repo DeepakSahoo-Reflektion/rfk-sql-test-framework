@@ -1,6 +1,5 @@
-import logging
 from engine.resolver.fs_resolver import *
-from common.const.vars import FS
+from common.const.vars import FS,LOC_TYPE
 
 LOGGER = logging.getLogger(__name__)
 
@@ -17,13 +16,14 @@ class ResolverFactory:
     _instances = {}
 
     @staticmethod
-    def get_resolver(type):
+    def get_resolver(context):
         '''
         Factory method to return appropriate resolver based on the input type.
 
         :param type: string
         :return: Resolver
         '''
+        type = context.get_param(LOC_TYPE)
         if not type:
             LOGGER.error('ExecutorFactory: type is not provided')
             return
