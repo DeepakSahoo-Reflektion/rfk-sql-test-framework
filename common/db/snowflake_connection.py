@@ -5,8 +5,6 @@ import logging
 from common.const.vars import SNOWFLAKE_ACC, SNOWFLAKE_USER, SNOWFLAKE_PWD
 from common.db.connection import Connection
 
-# logging.basicConfig(level=logging.DEBUG)
-# LOGGER = logging.getLogger()
 LOGGER = logging.getLogger(__name__)
 
 

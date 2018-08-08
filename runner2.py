@@ -6,11 +6,13 @@ from engine.data.context import *
 from engine.runner.execution_strategy import *
 
 logging.basicConfig(level=logging.DEBUG)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 
 if __name__ == '__main__':
+    LOGGER.info('Starting .......')
+    LOGGER.debug('Starting execution......')
     suite_context = ContextManager.initialize_default(SUITE)
 
     parser = argparse.ArgumentParser()

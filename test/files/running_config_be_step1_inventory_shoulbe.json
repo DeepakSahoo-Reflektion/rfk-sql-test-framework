@@ -39,7 +39,7 @@
     ""
   ],
   "after_once": [
-    "",
-    ""
+    "UNSET DATE",
+    "UNSET HOUR"
   ]
 }

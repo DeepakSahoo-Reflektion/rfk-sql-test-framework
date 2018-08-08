@@ -11,8 +11,7 @@ from engine.parser.parser_factory import ParserFactory
 from engine.data.context import *
 from engine.runner.execution_strategy import *
 
-logging.basicConfig(level=logging.DEBUG)
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class ExecutionStrategy(metaclass=abc.ABCMeta):
@@ -51,7 +50,6 @@ class ExecuteOneStrategy(ExecutionStrategy):
     def execute(self):
         sheet_context = ContextManager.initialize_default(SHEET).update_params(
             self._context.get_params([LOC_TYPE, EXEC_TYPE, FILE_PATH_LOC]))
-        LOGGER.info('ExecutionOneStrategy with %s',sheet_context)
         self._context.update_contexts({'Context-1': self.execute_sheet(sheet_context)})
         return self._context
 
