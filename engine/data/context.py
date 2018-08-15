@@ -5,6 +5,14 @@ from common.const.vars import CASE, SHEET, SUITE, ASSERT
 logger = logging.getLogger(__name__)
 
 
+# class PrettyPrinter(object):
+#     def __str__(self):
+#         lines = [self.__class__.__name__ + ':']
+#         for key, val in vars(self).items():
+#             lines += '{}: {}'.format(key, val).split('\n')
+#         return '\n    '.join(lines)
+#
+
 class ContextManager(object):
     """
     This class is responsible to manage and create different kinds of contexts.
@@ -36,6 +44,18 @@ class SuiteContext(object):
         self.instances = {}
         self.result = None
         return self
+
+    def print(self,indent = 0):
+        print_log = ''*indent + type(self).__name__ + ':'
+        indent += 4
+        print_log = print_log+'\n'
+        print_log = print_log+  ' ' * indent + 'params:{}'.format(self.params)+'\n'
+        print_log = print_log + ' ' * indent + 'data:{}'.format(self.data) + '\n'
+        print_log = print_log + ' ' * indent + 'Test-sheet:\n'
+        indent += 4
+        for k,v in self.contexts.items():
+            print_log = print_log + ' ' * indent + '{}:{}'.format(k,v.print(indent)) + '\n'
+        print(print_log)
 
     def update_params(self, params):
         self.params.update(params)
@@ -70,7 +90,6 @@ class SuiteContext(object):
         return self
 
 
-## TODO:visit here again
 class SheetContext(object):
     def with_default(self):
         self.data = None
@@ -79,6 +98,19 @@ class SheetContext(object):
         self.instances = {}
         self.result = None
         return self
+
+    def print(self,indent = 0):
+        print_log = '' * indent + type(self).__name__ + ':'
+        indent += 4
+        print_log = print_log + '\n'
+        print_log = print_log + ' ' * indent + 'params:{}'.format(self.params) + '\n'
+        print_log = print_log + ' ' * indent + 'result:{}'.format(self.result) + '\n'
+        print_log = print_log + ' ' * indent + 'Test-case:\n'
+        indent += 4
+        for k, v in self.contexts.items():
+            print_log = print_log + ' ' * indent + '{}:{}'.format(k, v.print(indent)) + '\n'
+        return print_log
+
 
     def update_params(self, params):
         self.params.update(params)
@@ -122,6 +154,19 @@ class CaseContext(object):
         self.result = None
         return self
 
+    def print(self,indent = 0):
+        print_log = '' * indent + type(self).__name__ + ':'
+        indent += 4
+        print_log = print_log + '\n'
+        print_log = print_log + ' ' * indent + 'params:{}'.format(self.params) + '\n'
+        print_log = print_log + ' ' * indent + 'result:{}'.format(self.result) + '\n'
+        print_log = print_log + ' ' * indent + 'asserts:\n'
+        indent += 4
+        for k, v in self.contexts.items():
+            print_log = print_log + ' ' * indent + '{}:{}'.format(k, v.print(indent)) + '\n'
+        return print_log
+
+
     def update_data(self, param):
         self.data = param
         return self
@@ -162,6 +207,13 @@ class AssertContext(object):
         self.instances = {}
         self.result = None
         return self
+
+    def print(self,indent = 0):
+        print_log = '' * indent + type(self).__name__ + ':'
+        indent += 4
+        print_log = print_log + '\n'
+        print_log = print_log + ' ' * indent + 'result:{}'.format(self.result) + '\n'
+        return print_log
 
     def update_data(self, param):
         self.data = param

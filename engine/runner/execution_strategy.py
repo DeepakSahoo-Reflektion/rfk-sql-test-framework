@@ -82,4 +82,5 @@ class ExecutionContext:
         self._strategy = strategy
 
     def execute(self):
-        self._strategy.execute()
+        final_result = self._strategy.execute()
+        return final_result

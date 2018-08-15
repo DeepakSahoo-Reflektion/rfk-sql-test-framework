@@ -56,9 +56,9 @@ class ServiceFacade(object):
                 sql = '/'.join((self._context.get_data()[SQL_PATH], sql))
 
         if sql.startswith('$'):
-            LOGGER.info('starts with dollar')
+            LOGGER.debug('starts with dollar')
             sql = self._resolve_placeholder(sql)
-            LOGGER.info('ServiceFacade:_evaluate_single before calling the serve %s', sql)
+            LOGGER.debug('ServiceFacade:_evaluate_single before calling the serve %s', sql)
         return self._db_service.serve(sql)
 
     def _evaluate_list(self, args):

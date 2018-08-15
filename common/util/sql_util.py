@@ -60,16 +60,17 @@ def seg_exec_types(args):
     snowsql_command_queries = [arg for arg in args if arg.startswith('snowsql>')]
     snowsql_command_queries_without_prompt = [arg.split('snowsql>')[1] for arg in args if arg.startswith('snowsql>')]
     others = [item for item in args if item not in snowsql_command_queries]
-    LOGGER.info('sql_util:seg_exec_types with %s', snowsql_command_queries_without_prompt)
-    LOGGER.info('sql_util:seg_exec_types with %s', others)
+    LOGGER.debug('sql_util:seg_exec_types with snowsql:- %s', snowsql_command_queries_without_prompt)
+    LOGGER.debug('sql_util:seg_exec_types with Normal SQL:-%s', others)
     return snowsql_command_queries_without_prompt, others
 
 
 def execute_snowsql_command(args):
-    SNOW_SQL_TEMPLATE = "/Applications/SnowSQL.app/Contents/MacOS/snowsql -o exit_on_error=true -o log_level=DEBUG -q '{}'"
+
 
     for arg in args:
+        LOGGER.info('EXECUTING:----------- %s', arg)
+        SNOW_SQL_TEMPLATE = "/Applications/SnowSQL.app/Contents/MacOS/snowsql -o exit_on_error=true -o log_level=DEBUG -q '{}'"
         SNOW_SQL_TEMPLATE = SNOW_SQL_TEMPLATE.format(arg)
-        LOGGER.info('sql_util:execute_snowsql_command with argument %s', SNOW_SQL_TEMPLATE)
         ret = subprocess.call(SNOW_SQL_TEMPLATE, shell=True)
         LOGGER.info('sql_util:execute_snowsql_command with return %s', ret)
