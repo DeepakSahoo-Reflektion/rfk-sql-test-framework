@@ -1,33 +1,22 @@
 class SheetResult(object):
-    def __init__(self, name, status=None):
-        self.name = name
+    def __init__(self,  status=None, failed_cases = []):
         self.status = status
-        self.cases = {}
-
-    def add_case_result(self, seq_no, case_result):
-        self.cases[seq_no] = case_result
-
-    def update_status(self, status):
-        self.status = status
+        self.failed_cases = failed_cases
 
     def __repr__(self):
-        return 'SheetResult(name={},status={},cases={})'.format(self.name, self.status, self.cases)
+        return 'SheetResult(status={},failed_cases={})'.format(self.status, self.failed_cases)
 
 
 class CaseResult(object):
-    def __init__(self, name=None, status=None):
-        self.name = name
+    def __init__(self, status=None, failed_asserts=[]):
         self.status = status
-        self.asserts = {}
+        self.failed_asserts = failed_asserts
 
-    def add_assert_result(self, seq_no, assert_result):
-        self.asserts[seq_no] = assert_result
-
-    def update_status(self, status):
-        self.status = status
+    def get_status(self):
+        return self.status
 
     def __repr__(self):
-        return 'CaseResult(name={},status={},asserts={})'.format(self.name, self.status, self.asserts)
+        return 'CaseResult(status={},failed_asserts={})'.format(self.status, self.failed_asserts)
 
 
 class AssertResult(object):
@@ -36,6 +25,9 @@ class AssertResult(object):
         self.status = status
         self.expected = expected
         self.actual = actual
+
+    def get_status(self):
+        return self.status
 
     def __repr__(self):
         return 'AssertResult(message={},status={})'.format(self.message, self.status)

@@ -26,6 +26,13 @@
             "$insert1",""
           ],
           "message": "Count per trigger is different"
+        },
+         {
+          "sql": "SELECT * FROM TEST.EM.be_workflow_step1_inventory_trigger_rows",
+          "expected": [
+            "$insert1",""
+          ],
+          "message": "Count per trigger is different really"
         }
       ],
       "after_test": [
@@ -39,7 +46,7 @@
     ""
   ],
   "after_once": [
-    "",
-    ""
+    "UNSET DATE",
+    "UNSET HOUR"
   ]
 }

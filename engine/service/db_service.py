@@ -43,6 +43,7 @@ class DBService(Service):
         :param script:
         :return: doesn't return any value
         '''
+        LOGGER.info('EXECUTING:----------- %s', script)
         cur = self._conn.cursor()
         f = read_file(script)
 
@@ -55,7 +56,7 @@ class DBService(Service):
             raise e
         finally:
             cur.close()
-        LOGGER.info('DBService:run_script EXIT')
+        LOGGER.debug('DBService:run_script EXIT')
 
     def run_statement(self, statement):
         '''
@@ -64,7 +65,8 @@ class DBService(Service):
         :param statement: the SQL statement
         :return: the header and rows values if any.
         '''
-        LOGGER.info('DBService:run_statment ENTRY with :%s', statement)
+        LOGGER.debug('DBService:run_statment ENTRY with :%s', statement)
+        LOGGER.info('EXECUTING:----------- %s', statement)
         try:
             row_data = []
             headers = []
@@ -95,7 +97,7 @@ class DBService(Service):
         :param args: accepts the SQL statement as parameter
         :return:
         '''
-        LOGGER.info('DBService:_evaluate_single ENTRY with  %s', args)
+        LOGGER.debug('DBService:_evaluate_single ENTRY with  %s', args)
 
         if len(args) == 0:
             LOGGER.warn('DBService:_evaluate_single empty args returning....')
