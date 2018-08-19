@@ -1,7 +1,7 @@
 import logging
 
 from engine.executor.executor import Executor
-from engine.handler.handler import SheetHandler
+from engine.handler.sheet_handler import SheetHandler
 from engine.service.service_facade import ServiceFacade
 from common.const.vars import SERVICE_INSTANCE
 

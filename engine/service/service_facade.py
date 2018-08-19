@@ -26,7 +26,7 @@ class ServiceFacade(object):
         self._context = context
 
     def _resolve_placeholder(self, arg):
-        LOGGER.info('ServiceFacade:_resolve_placeholder ENTRY with %s', arg)
+        LOGGER.debug('ServiceFacade:_resolve_placeholder ENTRY with %s', arg)
 
         # conf_file_name = ntpath.basename(self._context.kv[CONFIG_FILE_NAME])
         conf_file_name = ntpath.basename(self._context.params[FILE_PATH_LOC])

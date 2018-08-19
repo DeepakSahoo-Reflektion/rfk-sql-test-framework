@@ -8,14 +8,15 @@
   "before_once": [
     "USE TEST",
     "SET DATE='20180723'",
-    "SET HOUR='03'",
-    "INSERT INTO EM.last_etl_exec_date_hour ( etl_date, etl_hour ) VALUES ('20180723','02')"
+    "SET HOUR='03'"
   ],
   "before_each": [
     "TRUNCATE TABLE TEST.EM.be_workflow_step4_merged_rows",
     "TRUNCATE TABLE TEST.EM.be_workflow_queue",
     "TRUNCATE TABLE TEST.EM.be_workflow_step3_mapped_rows",
-    "TRUNCATE TABLE TEST.EM.test_be_workflow_step4_merged_rows"
+    "TRUNCATE TABLE TEST.EM.test_be_workflow_step4_merged_rows",
+    "$truncate_last_etl_exec_date_hour",
+    "INSERT INTO EM.last_etl_exec_date_hour ( etl_date, etl_hour ) VALUES ('20180723','02')"
   ],
   "tests": [
     {
@@ -23,14 +24,14 @@
       "description": "data in queue table and no data in current batch",
       "before_test": [
         "snowsql>put file:///Users/deepak/Downloads/input_queue.json @TEST.TEMP.mystage",
-        "snowsql>copy into TEST.EM.be_workflow_queue from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD,parse_json($1):REASONS from @TEST.TEMP.mystage/input_queue.json.gz t)"
+        "snowsql>copy into TEST.EM.be_workflow_queue(ckey,account,domain_hash,domain_name,etl_date,etl_hour,ulid,ulid_type,uuid,trigger_name,trigger_group,trigger_timestamp,payload,reasons) from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD,parse_json($1):REASONS from @TEST.TEMP.mystage/input_queue.json.gz t)"
       ],
       "asserts": [
         {
           "sql": "SELECT count(*) FROM TEST.EM.be_workflow_step4_merged_rows",
           "expected": [
             "snowsql>put file:///Users/deepak/Downloads/exp_step4_merged.json @TEST.TEMP.mystage",
-            "snowsql>copy into TEST.EM.test_be_workflow_step4_merged_rows from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):SOURCE,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/exp_step4_merged.json.gz t)"
+            "snowsql>copy into TEST.EM.test_be_workflow_step4_merged_rows(ckey,account,domain_hash,domain_name,etl_date,etl_hour,ulid,ulid_type,uuid,trigger_name,trigger_group,trigger_timestamp,source,payload) from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):SOURCE,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/exp_step4_merged.json.gz t)"
           ],
           "message": "count of expected and actual rows should be same"
         },
@@ -38,6 +39,12 @@
           "sql": "SELECT distinct SOURCE FROM TEST.EM.be_workflow_step4_merged_rows",
           "expected": [],
           "message": "The source column value should be SOURCE "
+        },
+        {
+          "sql":"value:SELECT COUNT(*) FROM TEST.EM.be_workflow_step4_merged_rows",
+          "expected":"3",
+          "condition":"less_than",
+          "message":"count value is equal"
         }
       ],
       "after_test": []
@@ -45,17 +52,18 @@
     {
       "name": "test2",
       "description": "data in both queue table and current_batch",
+      "skip":"true",
       "before_test": [
-        "snowsql>copy into TEST.EM.be_workflow_queue from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD,parse_json($1):REASONS from @TEST.TEMP.mystage/input_queue.json.gz t)",
+        "snowsql>copy into TEST.EM.be_workflow_queue(ckey,account,domain_hash,domain_name,etl_date,etl_hour,ulid,ulid_type,uuid,trigger_name,trigger_group,trigger_timestamp,payload,reasons) from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD,parse_json($1):REASONS from @TEST.TEMP.mystage/input_queue.json.gz t)",
         "snowsql>put file:///Users/deepak/Downloads/input_step4_merged.json @TEST.TEMP.mystage",
-        "snowsql>copy into TEST.EM.be_workflow_step3_mapped_rows from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/input_step4_merged.json.gz t)"
+        "snowsql>copy into TEST.EM.be_workflow_step3_mapped_rows(ckey,account,domain_hash,domain_name,etl_date,etl_hour,ulid,ulid_type,uuid,trigger_name,trigger_group,trigger_timestamp,payload) from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/input_step4_merged.json.gz t)"
       ],
       "asserts": [
         {
           "sql": "SELECT count(*) FROM TEST.EM.be_workflow_step4_merged_rows",
           "expected": [
             "snowsql>put file:///Users/deepak/Downloads/exp_step4_1_merged.json @TEST.TEMP.mystage",
-            "snowsql>copy into TEST.EM.test_be_workflow_step4_merged_rows from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):SOURCE,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/exp_step4_1_merged.json.gz t)"
+            "snowsql>copy into TEST.EM.test_be_workflow_step4_merged_rows(ckey,account,domain_hash,domain_name,etl_date,etl_hour,ulid,ulid_type,uuid,trigger_name,trigger_group,trigger_timestamp,source,payload) from (select parse_json($1):CKEY, parse_json($1):ACCOUNT, parse_json($1):DOMAIN_HASH, parse_json($1):DOMAIN_NAME,parse_json($1):ETL_DATE,parse_json($1):ETL_HOUR,parse_json($1):ULID,parse_json($1):ULID_TYPE,parse_json($1):UUID,parse_json($1):TRIGGER_GROUP,parse_json($1):TRIGGER_NAME,parse_json($1):TRIGGER_TIMESTAMP,parse_json($1):SOURCE,parse_json($1):PAYLOAD from @TEST.TEMP.mystage/exp_step4_1_merged.json.gz t)"
           ],
           "message": "count of expected and actual rows should be same"
         },
@@ -65,9 +73,9 @@
           "message": "The source column value should be SOURCE and CURRENT_BATCH "
         },
         {
-          "sql":"SELECT * FROM TEST.EM.be_workflow_step4_merged_rows",
-          "expected":[],
-          "message":"both table data should be equal"
+          "sql": "SELECT * FROM TEST.EM.be_workflow_step4_merged_rows",
+          "expected": [],
+          "message": "both table data should be equal"
         }
       ],
       "after_test": []

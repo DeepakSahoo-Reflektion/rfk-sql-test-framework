@@ -16,3 +16,9 @@ def extract_qry_from(args):
     if COLON not in args:
         return args
     return args.split(COLON)[1]
+
+def extract_query_and_predicate_from(args):
+    if COLON not in args:
+        return (None,args)
+
+    return (args.split(COLON)[0],args.split(COLON)[1])
