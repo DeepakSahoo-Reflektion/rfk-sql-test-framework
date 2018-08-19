@@ -1,5 +1,5 @@
 class SheetResult(object):
-    def __init__(self,  status=None, failed_cases = []):
+    def __init__(self, status=None, failed_cases=[]):
         self.status = status
         self.failed_cases = failed_cases
 
@@ -8,15 +8,17 @@ class SheetResult(object):
 
 
 class CaseResult(object):
-    def __init__(self, status=None, failed_asserts=[]):
+    def __init__(self, status=None, failed_asserts=[], skipped_asserts=[]):
         self.status = status
         self.failed_asserts = failed_asserts
+        self.skipped_asserts = skipped_asserts
 
     def get_status(self):
         return self.status
 
     def __repr__(self):
-        return 'CaseResult(status={},failed_asserts={})'.format(self.status, self.failed_asserts)
+        return 'CaseResult(status={},failed_asserts={},skipped_asserts={})'.format(self.status, self.failed_asserts,
+                                                                                   self.skipped_asserts)
 
 
 class AssertResult(object):

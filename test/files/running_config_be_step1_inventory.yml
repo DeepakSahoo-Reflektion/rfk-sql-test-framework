@@ -8,12 +8,12 @@ script_path: "/Users/deepak/bi2/rfk-business-insights/etl/sql/email_marketing/be
 before_once:
 - ''
 before_each:
-- TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows
-- TRUNCATE TABLE TEST.ETL.user_events
-- SET DATE='20180723'
-- SET HOUR='03'
-- TRUNCATE TABLE TEST.PUBLIC.product_state_changes
-- USE TEST
+- "TRUNCATE TABLE TEST.EM.be_workflow_step1_inventory_trigger_rows"
+- "TRUNCATE TABLE TEST.ETL.user_events"
+- "SET DATE='20180723'"
+- "SET HOUR='03'"
+- "TRUNCATE TABLE TEST.PUBLIC.product_state_changes"
+- "USE TEST"
 tests:
 - name: test1
   description: description1
